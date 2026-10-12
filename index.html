@@ -14,7 +14,7 @@
 <meta property="og:description" content="Меню MySushi с ценами. Заказ в WhatsApp, доставка по Alma City">
 <meta property="og:url" content="https://bndprog79-cloud.github.io/my-sushi/">
 <meta property="og:locale" content="ru_RU">
-<meta property="og:image" content="https://bndprog79-cloud.github.io/my-sushi/og-image.png?v=ee4517a735">
+<meta property="og:image" content="https://bndprog79-cloud.github.io/my-sushi/og-image.png?v=3e79486ba3">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -22,7 +22,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="MySushi — суши, пицца, курица с доставкой">
 <meta name="twitter:description" content="Меню MySushi с ценами. Заказ в WhatsApp, доставка по Alma City">
-<meta name="twitter:image" content="https://bndprog79-cloud.github.io/my-sushi/og-image.png?v=ee4517a735">
+<meta name="twitter:image" content="https://bndprog79-cloud.github.io/my-sushi/og-image.png?v=3e79486ba3">
 <!--OG:END-->
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <style>
@@ -674,10 +674,23 @@
   .step[disabled] { color: var(--text-2); cursor: default; }
   .stepper .qty { min-width: 24px; text-align: center; font-weight: 600; }
 
-  /* Фото блюда поверх рисунка-заглушки */
+  /* Фото (tools/photos.js) поверх рисунка-заглушки; не загрузилось — фото убирается, виден рисунок */
+  :root, :root[data-theme] { --photo-scrim: rgba(16, 12, 10, .74); --photo-fade: rgba(16, 12, 10, 0); --on-photo: #fff; }
   .ill.has-photo { position: relative; }
-  .ill .fphoto { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+  .fphoto { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
   .ill-mini .fphoto { width: 100%; margin: 0; }
+  .ill-mini.has-photo { border-radius: var(--radius-sm); }
+  /* Плитка раздела с фото: фото на всю плитку, название и «N позиций» поверх снизу на затемнении (белый текст — контраст AA
+     на любом фото: под текстом затемнение не меньше 74%) */
+  .cat-card.has-photo { border-color: transparent; }
+  .cat-card.has-photo .body {
+    position: relative; flex: 1; display: flex; flex-direction: column; justify-content: flex-end;
+    margin-top: -40px; padding-top: 40px; color: var(--on-photo);
+    background: linear-gradient(to bottom, var(--photo-fade) 0, var(--photo-scrim) 36px);
+  }
+  .cat-card.has-photo .count { color: var(--on-photo); }
+  .cat-card.has-photo > .promo-tag { z-index: 1; }
+  .cline-top .ill-mini { margin: 6px 4px 0 0; }
   .card .fcomp { color: var(--text); }
 
   /* Нижняя панель: корзина / «Добавить» / счётчик и «Корзина» / «Заказать» */
@@ -1361,12 +1374,12 @@ const priceData = {
             { id: "50", name: { ru: "50 шт.", kk: "50 дана" }, amount: 8790 }
           ]
         },
-        { id: "doner", illustration: "food-chicken", name: { ru: "Фирменный донер", kk: "Фирмалық донер" }, price: { amount: 1800, from: true },
+        { id: "doner", illustration: "food-doner", name: { ru: "Фирменный донер", kk: "Фирмалық донер" }, price: { amount: 1800, from: true },
           desc: { ru: "курица, овощи, соус", kk: "тауық еті, көкөністер, тұздық" }
         }, // [?]
-        { id: "burger-set", illustration: "food-chicken", name: { ru: "Бургер с курицей + фри + Coca-Cola 0,5 л", kk: "Тауық етінен бургер + фри + Coca-Cola 0,5 л" }, price: { amount: 2200 } },
-        { id: "nuggets", illustration: "food-chicken", name: { ru: "Наггетсы", kk: "Наггетстер" }, price: { amount: 790 }, pieces: 6 },
-        { id: "corn-dogs", illustration: "food-chicken", name: { ru: "Корн-доги", kk: "Корн-догтар" }, price: { amount: 990 }, pieces: 4 },
+        { id: "burger-set", illustration: "food-burger", name: { ru: "Бургер с курицей + фри + Coca-Cola 0,5 л", kk: "Тауық етінен бургер + фри + Coca-Cola 0,5 л" }, price: { amount: 2200 } },
+        { id: "nuggets", illustration: "food-nuggets", name: { ru: "Наггетсы", kk: "Наггетстер" }, price: { amount: 790 }, pieces: 6 },
+        { id: "corn-dogs", illustration: "food-nuggets", name: { ru: "Корн-доги", kk: "Корн-догтар" }, price: { amount: 990 }, pieces: 4 },
         { id: "cheese-sticks", illustration: "food-chicken", name: { ru: "Сырные палочки", kk: "Ірімшік таяқшалары" }, price: { amount: 990 }, pieces: 4 }, // [?]
         { id: "fries", illustration: "food-fries", name: { ru: "Картофель фри", kk: "Фри картобы" }, price: { amount: 790 }, veg: true,
           variants: [
@@ -1420,6 +1433,12 @@ const ILLUSTRATIONS = {
     '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hm" d="M58 72a42 42 0 1 0 84 0a42 42 0 1 0 -84 0" pathLength="1"/><path class="c-hl" d="M65 72a35 35 0 1 0 70 0a35 35 0 1 0 -70 0"/><path class="lc" opacity="0.25" d="M100 37V107M65 72H135M75 47L125 97M125 47L75 97" pathLength="1"/><path class="lc c-be" d="M80 56a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" pathLength="1"/><path class="lc c-be" d="M110 60a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" pathLength="1"/><path class="lc c-be" d="M74 84a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" pathLength="1"/><path class="lc c-be" d="M104 88a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" pathLength="1"/><path class="lc c-be" d="M94 72a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" pathLength="1"/><path class="lc c-be" d="M118 78a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" pathLength="1"/><path class="c-ik" d="M93.6 52a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0"/><path class="fw" d="M95 52a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-ik" d="M67.6 70a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0"/><path class="fw" d="M69 70a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-ik" d="M127.6 92a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0"/><path class="fw" d="M129 92a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-ik" d="M89.6 98a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0"/><path class="fw" d="M91 98a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-aq" d="M104 62Q110.4 64.1 112.7 57Q106.3 54.9 104 62Z"/><path class="c-aq" d="M90 78Q84.2 76.1 82.2 82.5Q88 84.4 90 78Z"/><path class="c-go" d="M150 32Q150.7 35.3 154 36Q150.7 36.7 150 40Q149.3 36.7 146 36Q149.3 35.3 150 32Z"/><path class="c-go" d="M52 105Q52.5 107.5 55 108Q52.5 108.5 52 111Q51.5 108.5 49 108Q51.5 107.5 52 105Z"/></svg>',
   'food-chicken':
     '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-mt" d="M116.2 69.8L125.6 73.2Q128.4 74.2 127.3 77L127.3 77Q126.3 79.9 123.5 78.8L114.1 75.4Q111.3 74.4 112.3 71.6L112.3 71.6Q113.3 68.8 116.2 69.8Z" pathLength="1"/><path class="lc c-mt" d="M126.4 74.5a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" pathLength="1"/><path class="lc c-mt" d="M124.1 80.9a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" pathLength="1"/><path class="lc c-hm" d="M63.4 53.8C69.3 37.8 103.8 48.3 104.6 63.5L115.3 69.3L113.1 75.3L101.2 72.9C90.8 84 57.6 69.8 63.4 53.8Z" pathLength="1"/><path class="c-hd" fill-opacity="0.35" d="M65.2 60.8C71.8 71.7 89.1 77 99.7 71.2L101.2 72.9C90.8 84 57.6 69.8 65.2 60.8Z"/><path class="c-hl" fill-opacity="0.8" d="M75.6 49.7Q86.3 49.4 94.7 55.6Q85 53.1 74.9 51.6Z"/><path class="lc c-mt" d="M125.7 80.6L135.5 78.5Q138.4 77.9 139 80.9L139 80.9Q139.7 83.8 136.7 84.4L126.9 86.5Q124 87.1 123.4 84.2L123.4 84.2Q122.8 81.2 125.7 80.6Z" pathLength="1"/><path class="lc c-mt" d="M136.3 77.1a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" pathLength="1"/><path class="lc c-mt" d="M137.7 83.8a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" pathLength="1"/><path class="lc c-hm" d="M72.5 95C69 78.4 103.8 68.9 112.6 81.4L124.7 80.6L126 86.9L114.6 91.1C111.7 106.1 76.1 111.6 72.5 95Z" pathLength="1"/><path class="c-hd" fill-opacity="0.35" d="M77.7 100C89.1 105.8 106.5 101.1 112.5 90.6L114.6 91.1C111.7 106.1 76.1 111.6 77.7 100Z"/><path class="c-hl" fill-opacity="0.8" d="M80.6 85.1Q89.6 79.1 100 79.9Q90.4 83 81.1 87Z"/><path class="lc c-be" d="M132 100C140 92 146 80 146 70C150 74 150 90 140 102C137 105 133 104 132 100Z" pathLength="1"/><path class="lc c-aq" d="M146 70C146 66 148 63 151 62" pathLength="1"/><path class="c-go" d="M56 36Q56.7 39.3 60 40Q56.7 40.7 56 44Q55.3 40.7 52 40Q55.3 39.3 56 36Z"/><path class="c-go" d="M150 37Q150.5 39.5 153 40Q150.5 40.5 150 43Q149.5 40.5 147 40Q149.5 39.5 150 37Z"/></svg>',
+  'food-doner':
+    '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hm" d="M114.5 33.1L121.1 35.5Q124.8 36.9 123.5 40.6L122.4 43.4Q121.1 47.2 117.3 45.8L110.7 43.4Q107 42.1 108.3 38.3L109.4 35.5Q110.7 31.7 114.5 33.1Z" pathLength="1"/><path class="lc c-hm" d="M97.6 29.6L104.4 27.8Q108.2 26.8 109.3 30.6L110 33.5Q111.1 37.4 107.2 38.4L100.4 40.2Q96.6 41.3 95.5 37.4L94.8 34.5Q93.7 30.6 97.6 29.6Z" pathLength="1"/><path class="lc c-hm" d="M87.5 31.7L94.3 32.9Q98.3 33.6 97.6 37.6L97.1 40.5Q96.4 44.5 92.4 43.8L85.5 42.5Q81.6 41.9 82.3 37.9L82.8 35Q83.5 31 87.5 31.7Z" pathLength="1"/><path class="lc c-aq" d="M121 48Q113.8 33.5 95.1 33Q102.2 47.6 121 48Z" pathLength="1"/><path class="lc c-aq" d="M85.2 44.3Q101.3 46.7 112.4 31.6Q96.4 29.2 85.2 44.3Z" pathLength="1"/><path class="lc c-be" d="M101.7 36.6a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0 -13 0" pathLength="1"/><path class="fw" fill-opacity="0.6" d="M105.2 36.6a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path class="lc fw" d="M126.8 50.7Q103.6 42.2 79.1 45.6L88.3 111Q95.6 117.8 104.2 112.6Z" pathLength="1"/><path class="c-hm" fill-opacity="0.45" d="M108.7 61a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0"/><path class="c-hm" fill-opacity="0.45" d="M90.2 65.1a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0"/><path class="c-hm" fill-opacity="0.45" d="M102.5 72.4a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0"/><path class="c-hm" fill-opacity="0.45" d="M94.2 55.5a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0"/><path class="lc c-be" d="M116.5 81.8Q100.1 75 82.7 78.2L88.3 111Q95.6 117.8 104.2 112.6Z" pathLength="1"/><path class="fw" fill-opacity="0.5" d="M112.5 91.4L84.6 88.5L85.2 92.5L111 95.3Z"/><path class="c-go" d="M58 38Q58.7 41.3 62 42Q58.7 42.7 58 46Q57.3 42.7 54 42Q57.3 41.3 58 38Z"/><path class="c-go" d="M148 93Q148.5 95.5 151 96Q148.5 96.5 148 99Q147.5 96.5 145 96Q147.5 95.5 148 93Z"/></svg>',
+  'food-burger':
+    '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hm" d="M72 98L128 98Q134 98 134 104L134 106Q134 112 128 112L72 112Q66 112 66 106L66 104Q66 98 72 98Z" pathLength="1"/><path class="lc c-hd" d="M70 81L130 81Q137 81 137 88L137 89Q137 96 130 96L70 96Q63 96 63 89L63 88Q63 81 70 81Z" pathLength="1"/><path class="lc c-hl" d="M63 76H137L134 82L127 88L121 82H97L90 90L84 82H63Z" pathLength="1"/><path class="lc c-aq" d="M60 70Q63 78 66 70Q69 66 72 70Q75 78 78 70Q81 66 84 70Q87 78 90 70Q93 66 96 70Q99 78 102 70Q105 66 108 70Q111 78 114 70Q117 66 120 70Q123 78 126 70Q129 66 132 70Q135 78 138 70Q141 74 140 76H60Q59 73 60 70Z" pathLength="1"/><path class="lc c-hm" d="M63 68C63 44 80 34 100 34C120 34 137 44 137 68Z" pathLength="1"/><path class="c-hl" fill-opacity="0.7" d="M74 50C78 42 88 38 96 38C88 41 81 45 78 52Z"/><path class="fw" d="M82.6 45.2L84.5 44.5Q85.7 44.1 86.1 45.2L86.1 45.2Q86.5 46.4 85.4 46.8L83.5 47.5Q82.3 47.9 81.9 46.8L81.9 46.8Q81.5 45.6 82.6 45.2Z"/><path class="fw" d="M97.2 40.6L99.2 41Q100.4 41.2 100.2 42.4L100.2 42.4Q100 43.6 98.8 43.4L96.8 43Q95.6 42.8 95.8 41.6L95.8 41.6Q96 40.4 97.2 40.6Z"/><path class="fw" d="M111.7 44.5L113.5 45.5Q114.5 46.1 113.9 47.1L113.9 47.1Q113.3 48.1 112.3 47.5L110.5 46.5Q109.5 45.9 110.1 44.9L110.1 44.9Q110.7 43.9 111.7 44.5Z"/><path class="fw" d="M90.8 55L92.8 54.6Q94 54.4 94.2 55.6L94.2 55.6Q94.4 56.8 93.2 57L91.2 57.4Q90 57.6 89.8 56.4L89.8 56.4Q89.6 55.2 90.8 55Z"/><path class="fw" d="M105.3 54.6L107.3 55.1Q108.4 55.4 108.1 56.6L108.1 56.6Q107.8 57.7 106.7 57.4L104.7 56.9Q103.6 56.6 103.9 55.4L103.9 55.4Q104.2 54.3 105.3 54.6Z"/><path class="fw" d="M122 54.4L123.5 55.7Q124.5 56.5 123.7 57.4L123.7 57.4Q122.9 58.3 122 57.6L120.5 56.3Q119.5 55.5 120.3 54.6L120.3 54.6Q121.1 53.7 122 54.4Z"/><path class="fw" d="M76.5 57.5L78.3 56.5Q79.3 55.9 79.9 56.9L79.9 56.9Q80.5 57.9 79.5 58.5L77.7 59.5Q76.7 60.1 76.1 59.1L76.1 59.1Q75.5 58.1 76.5 57.5Z"/><path class="c-go" d="M54 40Q54.7 43.3 58 44Q54.7 44.7 54 48Q53.3 44.7 50 44Q53.3 43.3 54 40Z"/><path class="c-go" d="M150 37Q150.5 39.5 153 40Q150.5 40.5 150 43Q149.5 40.5 147 40Q149.5 39.5 150 37Z"/></svg>',
+  'food-nuggets':
+    '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hm" d="M90.1 66.9C88.9 67.7 85.7 70.4 83.1 71.5C80.4 72.7 76.6 74.5 74.1 73.9C71.6 73.4 69.3 70.3 67.9 68.2C66.6 66 65.1 63 65.9 61.1C66.8 59.2 70.4 57.8 73 56.6C75.7 55.5 79.3 53.6 81.9 54.2C84.4 54.7 86.9 57.6 88.3 59.8C89.7 61.9 89.8 65.7 90.1 66.9Z" pathLength="1"/><path class="lc c-hm" d="M104.3 67.6C102.6 67.5 97.5 67.6 94.3 66.8C91.1 66.1 86.4 65.1 85.1 63.1C83.7 61.2 85.1 57.5 86.2 55C87.3 52.5 89.2 49.3 91.7 48.4C94.3 47.4 98.4 48.6 101.6 49.4C104.8 50.1 109.4 51 110.8 52.9C112.2 54.9 111.2 58.6 110.1 61.1C109 63.5 105.2 66.5 104.3 67.6Z" pathLength="1"/><path class="lc c-hm" d="M107.2 76.2C106.5 75.3 103.8 72.7 102.7 70.7C101.7 68.7 100.1 65.8 101 64.1C102 62.4 105.8 61.1 108.4 60.4C111 59.7 114.7 59 116.8 59.8C118.9 60.6 120 63.4 121.1 65.4C122.1 67.4 123.8 70.2 122.9 71.9C122 73.6 118.3 75 115.7 75.8C113.1 76.5 108.6 76.1 107.2 76.2Z" pathLength="1"/><path class="c-hd" fill-opacity="0.4" d="M72.6 60a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="c-hd" fill-opacity="0.4" d="M80.6 66a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="c-hd" fill-opacity="0.4" d="M93.6 54a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="c-hd" fill-opacity="0.4" d="M100.6 60a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="c-hd" fill-opacity="0.4" d="M108.6 66a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="lc c-be" d="M62 72H124L117 118H69Z" pathLength="1"/><path class="fw" fill-opacity="0.85" d="M65 84H121L120 92H66Z"/><path class="lc c-hl" d="M148.8 100.9L155.1 126.1Q155.6 128.1 153.6 128.6L153.6 128.6Q151.7 129.1 151.2 127.1L144.9 101.9Q144.4 99.9 146.4 99.5L146.4 99.5Q148.3 99 148.8 100.9Z" pathLength="1"/><path class="lc c-hm" d="M146.3 59.8L153.8 89.9Q156.1 99.1 146.8 101.4L146.8 101.4Q137.6 103.7 135.3 94.5L127.8 64.4Q125.5 55.2 134.7 52.9L134.7 52.9Q144 50.6 146.3 59.8Z" pathLength="1"/><path class="c-hl" fill-opacity="0.7" d="M142.4 58.9L146.9 77Q147.3 78.6 145.7 79L145.7 79Q144 79.4 143.6 77.8L139.1 59.7Q138.7 58.1 140.4 57.7L140.4 57.7Q142 57.3 142.4 58.9Z"/><path class="la" opacity="0.9" d="M133.3 63.6L143 69.4L137.2 79.1L146.8 84.9L141 94.6" pathLength="1"/><path class="c-go" d="M56 36Q56.7 39.3 60 40Q56.7 40.7 56 44Q55.3 40.7 52 40Q55.3 39.3 56 36Z"/><path class="c-go" d="M152 31Q152.5 33.5 155 34Q152.5 34.5 152 37Q151.5 34.5 149 34Q151.5 33.5 152 31Z"/></svg>',
   'food-fries':
     '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hl" d="M78.5 36.4L81.5 36.1Q83 35.9 83.2 37.4L87 74.2Q87.2 75.7 85.7 75.8L82.7 76.1Q81.2 76.3 81.1 74.8L77.2 38Q77 36.5 78.5 36.4Z" pathLength="1"/><path class="lc c-hl" d="M95.1 30.1L98.1 30.4Q99.6 30.6 99.4 32L95.6 68.8Q95.4 70.3 93.9 70.2L90.9 69.9Q89.4 69.7 89.6 68.2L93.5 31.4Q93.6 29.9 95.1 30.1Z" pathLength="1"/><path class="lc c-hl" d="M94.7 38.4L97.7 38Q99.2 37.9 99.4 39.4L103.2 76.2Q103.4 77.7 101.9 77.8L98.9 78.1Q97.4 78.3 97.3 76.8L93.4 40Q93.3 38.5 94.7 38.4Z" pathLength="1"/><path class="lc c-hl" d="M111.3 28.1L114.3 28.4Q115.8 28.6 115.6 30.1L111.8 66.9Q111.6 68.3 110.1 68.2L107.1 67.9Q105.6 67.7 105.8 66.2L109.7 29.4Q109.8 27.9 111.3 28.1Z" pathLength="1"/><path class="lc c-hl" d="M110.3 34.4L113.3 34.1Q114.8 33.9 115 35.4L118.8 72.2Q119 73.7 117.5 73.8L114.5 74.2Q113 74.3 112.9 72.8L109 36Q108.8 34.5 110.3 34.4Z" pathLength="1"/><path class="lc c-hl" d="M89.4 46L92.4 46.3Q93.9 46.5 93.8 48L89.9 84.8Q89.7 86.2 88.2 86.1L85.3 85.8Q83.8 85.6 83.9 84.1L87.8 47.3Q87.9 45.8 89.4 46Z" pathLength="1"/><path class="lc c-hl" d="M99.4 44.3L102.4 44Q103.8 43.9 104 45.3L107.9 82.1Q108 83.6 106.5 83.8L103.6 84.1Q102.1 84.3 101.9 82.8L98 46Q97.9 44.5 99.4 44.3Z" pathLength="1"/><path class="lc c-hl" d="M113.2 48L116.2 48.3Q117.7 48.5 117.5 49.9L113.7 86.7Q113.5 88.2 112 88.1L109 87.8Q107.6 87.6 107.7 86.1L111.6 49.3Q111.7 47.8 113.2 48Z" pathLength="1"/><path class="lc c-be" d="M72 70H128L120 120H80Z" pathLength="1"/><path class="fw" fill-opacity="0.9" d="M76 92H124L122 104H78Z"/><path class="c-be" d="M96.6 98a3.4 3.4 0 1 0 6.8 0a3.4 3.4 0 1 0 -6.8 0"/><path class="c-go" d="M62 36Q62.7 39.3 66 40Q62.7 40.7 62 44Q61.3 40.7 58 40Q61.3 39.3 62 36Z"/><path class="c-go" d="M142 41Q142.5 43.5 145 44Q142.5 44.5 142 47Q141.5 44.5 139 44Q141.5 43.5 142 41Z"/></svg>',
   'food-drink':
@@ -2787,8 +2806,11 @@ formatTime = function (min) { return formatTimeSameDay(min > 1440 ? min - 1440 :
 // экран корзины #/cart (parseRoute, renderHome), нижняя панель корзины (render). Остальное — общее с салонами:
 // язык, поиск, режим работы, цены «от», варианты, QR, «Поделиться», PWA.
 // Поля блюда (clients/<id>/data.js): desc — состав, pieces — шт., grams — г, ml — мл, hit, spicy, veg, variants (у каждого id),
-// photo — файл в clients/<id>/assets/photos/ (на сайте photos/<файл>; нет файла или не загрузился — рисунок).
 // Условия заказа — priceData.meta.delivery (из settings.delivery): min, fee, freeFrom, pickup, untilTime.
+// Фото — карта PHOTOS от сборки (tools/photos.js: source/photos + source/foto-spisok.md), файлы рядом в photos/:
+// c — фото разделов (<имя>-t.webp плитка, <имя>.webp шапка), i — фото блюд «категория/блюдо» (<имя>.webp карточка, <имя>-m.webp миниатюра).
+// Нет фото или файл не загрузился — рисунок.
+const PHOTOS = {"c":{"combo":"kat-kombo","cold-rolls":"kat-kholodnye-rolly","mini-rolls":"kat-mini-rolly","warm-rolls":"kat-teplye-rolly","baked-rolls":"kat-zapechennye-rolly","sushi":"kat-sushi","pizza":"kat-pizza","chicken":"kat-kuritsa-zakuski","drinks":"kat-napitki"},"i":{}};
 const DELIVERY = priceData.meta.delivery || { min: 0, fee: 0, pickup: false };
 const CART_KEY = LANG_KEY.replace(/lang$/, 'cart');
 const ORDER_KEY = LANG_KEY.replace(/lang$/, 'order');
@@ -2917,23 +2939,53 @@ function focusControl(key) {
 }
 
 // ─────────── Строка и карточка блюда ───────────
-// Картинка блюда: рисунок (заглушка), поверх — фото, если есть; фото не загрузилось — остаётся рисунок
-function dishPicture(item, className) {
-  const box = illustration(item.illustration, className);
-  if (item.photo) {
-    const img = el('img', 'fphoto');
-    img.alt = '';
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    img.addEventListener('error', function () {
-      if (img.parentNode) img.parentNode.removeChild(img);
-    });
-    img.src = 'photos/' + encodeURIComponent(item.photo);
-    box.classList.add('has-photo');
-    box.appendChild(img);
-  }
+// ─────────── Фото ───────────
+function photoName(map, key) { return Object.prototype.hasOwnProperty.call(map, key) ? map[key] : ''; }
+
+function photoSrc(name, suffix) { return 'photos/' + encodeURIComponent(name + suffix) + '.webp'; }
+
+// Фото поверх рисунка (или на всю плитку): грузится лениво; не загрузилось — фото убирается, остаётся рисунок
+function photoOver(box, src) {
+  const img = el('img', 'fphoto');
+  img.alt = '';
+  img.loading = 'lazy';
+  img.decoding = 'async';
+  img.addEventListener('error', function () {
+    if (img.parentNode) img.parentNode.removeChild(img);
+    box.classList.remove('has-photo');
+  });
+  img.src = src;
+  box.classList.add('has-photo');
+  box.insertBefore(img, box.firstChild);
   return box;
 }
+
+// Картинка блюда: рисунок-заглушка, поверх — фото, если есть (mini — миниатюра для строки и корзины)
+function dishPicture(cat, item, className, mini) {
+  const box = illustration(item.illustration, className);
+  const name = photoName(PHOTOS.i, cat.id + '/' + item.id);
+  if (name) photoOver(box, photoSrc(name, mini ? '-m' : ''));
+  return box;
+}
+
+// Фото разделов: плитки на главной (на всю плитку, название поверх на затемнении) и шапка категории
+function homePhotos(screen) {
+  const cards = screen.querySelectorAll('.cat-card');
+  for (let k = 0; k < cards.length; k++) {
+    const href = cards[k].getAttribute('href');
+    const cat = priceData.categories.filter(function (c) { return catHash(c) === href; })[0];
+    const name = cat ? photoName(PHOTOS.c, cat.id) : '';
+    if (name) photoOver(cards[k], photoSrc(name, '-t'));
+  }
+}
+
+const renderCategoryMenu = renderCategory;
+renderCategory = function (screen, cat) {
+  renderCategoryMenu(screen, cat);
+  const name = photoName(PHOTOS.c, cat.id);
+  const box = screen.querySelector('.screen-head .ill-big');
+  if (name && box) photoOver(box, photoSrc(name, ''));
+};
 
 // «0,5 л» — литры с запятой
 function formatLiters(ml) { return String(ml / 1000).replace('.', ','); }
@@ -3021,7 +3073,7 @@ serviceRow = function (cat, item, withCategory) {
   const wrap = el('div', 'frow');
   const row = el('a', 'row');
   row.href = itemHash(cat, item);
-  row.appendChild(dishPicture(item, 'ill-mini'));
+  row.appendChild(dishPicture(cat, item, 'ill-mini', true));
   const info = el('div', 'info');
   info.appendChild(el('div', 'name', loc(item.name)));
   if (withCategory) info.appendChild(el('div', 'cat', loc(cat.name)));
@@ -3042,7 +3094,7 @@ renderItem = function (screen, cat, item, app) {
   screen.appendChild(iconButton('share', 'share-item', t('share'), function () { shareLink(cat, item); }));
 
   const card = el('article', 'card');
-  card.appendChild(dishPicture(item, 'ill-hero draw'));
+  card.appendChild(dishPicture(cat, item, 'ill-hero draw', false));
   const body = el('div', 'card-body');
   body.appendChild(el('h1', null, loc(item.name)));
   const variants = itemVariants(item);
@@ -3112,7 +3164,10 @@ parseRoute = function (hash) {
 const renderHomeMenu = renderHome;
 renderHome = function (screen) {
   if (currentRoute && currentRoute.screen === 'cart') renderCart(screen);
-  else renderHomeMenu(screen);
+  else {
+    renderHomeMenu(screen);
+    homePhotos(screen);
+  }
 };
 
 // Нижняя панель «N позиций · сумма» на главной и в категории (в поиске тоже — он на главной)
@@ -3158,6 +3213,7 @@ function renderCart(screen) {
     const key = lineKey(x.l);
     const li = el('li', 'cline');
     const top = el('div', 'cline-top');
+    top.appendChild(dishPicture(x.r.cat, x.r.item, 'ill-mini', true));
     // Название блюда, под ним мелко — вариант («16 шт.») или объём/вес («0,5 л»)
     const info = el('div', 'cinfo');
     const link = el('a', 'cname', loc(x.r.item.name));
