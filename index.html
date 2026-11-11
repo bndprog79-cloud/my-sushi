@@ -7,22 +7,22 @@
 <meta name="theme-color" content="#F8F8F6">
 <title>MySushi</title>
 <!--OG:START-->
-<meta name="description" content="Меню MySushi с ценами. Заказ в WhatsApp, доставка по Alma City">
+<meta name="description" content="Меню MySushi: сеты, роллы, пицца, крылышки. Заказ в WhatsApp · Жунисова 12/8">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MySushi">
-<meta property="og:title" content="MySushi — суши, пицца, курица с доставкой">
-<meta property="og:description" content="Меню MySushi с ценами. Заказ в WhatsApp, доставка по Alma City">
+<meta property="og:title" content="MySushi — суши, пицца, чикен · Алматы">
+<meta property="og:description" content="Меню MySushi: сеты, роллы, пицца, крылышки. Заказ в WhatsApp · Жунисова 12/8">
 <meta property="og:url" content="https://bndprog79-cloud.github.io/my-sushi/">
 <meta property="og:locale" content="ru_RU">
-<meta property="og:image" content="https://bndprog79-cloud.github.io/my-sushi/og-image.png?v=3e79486ba3">
+<meta property="og:image" content="https://bndprog79-cloud.github.io/my-sushi/og-image.png?v=41e2c11b5f">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="MySushi — суши, пицца, курица с доставкой">
+<meta property="og:image:alt" content="MySushi — суши, пицца, чикен · Алматы">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="MySushi — суши, пицца, курица с доставкой">
-<meta name="twitter:description" content="Меню MySushi с ценами. Заказ в WhatsApp, доставка по Alma City">
-<meta name="twitter:image" content="https://bndprog79-cloud.github.io/my-sushi/og-image.png?v=3e79486ba3">
+<meta name="twitter:title" content="MySushi — суши, пицца, чикен · Алматы">
+<meta name="twitter:description" content="Меню MySushi: сеты, роллы, пицца, крылышки. Заказ в WhatsApp · Жунисова 12/8">
+<meta name="twitter:image" content="https://bndprog79-cloud.github.io/my-sushi/og-image.png?v=41e2c11b5f">
 <!--OG:END-->
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <style>
@@ -760,6 +760,53 @@
   @media (prefers-reduced-motion: reduce) {
     .fadd:active { transform: none; }
   }
+
+/* ─────────── Плавающая кнопка «‹ Назад» (engine/food/back-button.css — только у кафе с settings.backButton: true) ─────────── */
+  /* Внизу справа по краю колонки меню (448 px), над нижней панелью (--fback-b ставит back-button.js); заливка — тёмный цвет
+     логотипа (--ink из brand.ink, без него — главный цвет), белый текст; экрану — отступ снизу, чтобы кнопка не закрывала
+     последнюю строку и её «+» */
+  .fback {
+    position: fixed; z-index: 11; right: max(16px, env(safe-area-inset-right), calc(50% - 224px));
+    bottom: var(--fback-b, calc(16px + env(safe-area-inset-bottom)));
+    display: inline-flex; align-items: center; gap: 4px; min-height: 48px; min-width: 48px; padding: 0 20px 0 12px;
+    border: 0; border-radius: 16px; background: var(--ink, var(--accent-strong)); color: var(--on-ink, var(--on-accent));
+    font: 600 16px/1.2 var(--font-body); box-shadow: var(--ink-shadow, var(--shadow)); cursor: pointer;
+    animation: fadeIn .3s var(--ease) backwards; transition: transform .18s var(--ease);
+  }
+  .fback .ico { width: 22px; height: 22px; stroke-width: 2.2; }
+  .fback:active { transform: scale(.96); }
+  .screen.has-fback { padding-bottom: calc(var(--fback-b, calc(16px + env(safe-area-inset-bottom))) + 72px); }
+  @media (prefers-reduced-motion: reduce) {
+    .fback:active { transform: none; }
+  }
+
+/* ─────────── Альбом в шапке раздела (engine/food/gallery.css — только у кафе с settings.categoryGallery: true) ─────────── */
+  /* Лента листается пальцем (scroll-snap — прокрутку и доводку до слайда ведёт браузер, без своей анимации; при reduced motion
+     переход точек выключает общее правило движка), полосы прокрутки не видно; фото целиком в рамке одной высоты; название — на подложке */
+  .fgal { margin: 0 0 16px; }
+  .fgal-track {
+    display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch; border-radius: 16px;
+  }
+  .fgal-track::-webkit-scrollbar { display: none; }
+  .fgal-track:focus-visible { outline-offset: 2px; }
+  .fgal-slide {
+    flex: 0 0 100%; min-width: 0; scroll-snap-align: center; scroll-snap-stop: always;
+    display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 10px 10px 12px;
+    background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line); border-radius: 16px; text-decoration: none; color: var(--text);
+  }
+  /* Рамка всегда 4:3 (не выше половины экрана): фото любой формы вписывается целиком, слайды одной высоты */
+  .fgal-frame { position: relative; width: 100%; aspect-ratio: 4 / 3; max-height: 50vh; }
+  .fgal-img { position: absolute; top: 0; left: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
+  .fgal-cap {
+    max-width: 100%; padding: 4px 12px; border-radius: 999px; background: var(--surface); color: var(--text);
+    font-size: 14px; font-weight: 600; line-height: 1.3; text-align: center;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .fgal-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 10px; }
+  .fgal-dots[hidden] { display: none; }
+  .fgal-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-2); opacity: .4; transition: background-color .2s var(--ease), transform .2s var(--ease); }
+  .fgal-dot.is-on { background: var(--accent-strong); opacity: 1; transform: scale(1.3); }
 </style>
 </head>
 <body>
@@ -787,13 +834,13 @@ const priceData = {
     siteUrl: "https://bndprog79-cloud.github.io/my-sushi/",
     type: "food",
     delivery: {"min":3000,"fee":0,"pickup":true,"untilTime":"00:30"},
-    version: "1.0.0",
-    updatedAt: "2026-10-11",       // дата «Цены актуальны на»
+    version: "2.0.0",
+    updatedAt: "2026-11-11",       // дата «Цены актуальны на»
     defaultLang: "ru",            // ru | kk
     // Превью ссылки в мессенджерах (Open Graph) и картинка og-image.png — рисует сборка (tools/build.js)
     share: {
-      title: "MySushi — суши, пицца, курица с доставкой",
-      description: "Меню MySushi с ценами. Заказ в WhatsApp, доставка по Alma City",
+      title: "MySushi — суши, пицца, чикен · Алматы",
+      description: "Меню MySushi: сеты, роллы, пицца, крылышки. Заказ в WhatsApp · Жунисова 12/8",
       tagline: "sushi · pizza · chicken",
       heading: ["Меню", "Мәзір"],
       cta: "Меню · Заказ в WhatsApp",
@@ -811,7 +858,7 @@ const priceData = {
     instagram: "https://instagram.com/mysushi.alma.city",
     mapLink: "https://2gis.kz/almaty/firm/70000001061381929",
     timezone: "Asia/Almaty",
-    // Режим работы: ежедневно 11:00–01:00 (по фото меню; в 2ГИС 11:30–00:30 — уточнить [?]). Закрытие после полуночи.
+    // Режим работы: ежедневно 11:00–01:00 (по PDF; в Instagram 11:30–00:30, в WhatsApp до 23:59 — вопрос в sverka.md). Закрытие после полуночи.
     hours: {
       week: {
         mon: { open: "11:00", close: "01:00" },
@@ -826,12 +873,12 @@ const priceData = {
     },
     // Мелким текстом в корзине: условия доставки (под адресом) и оплата
     deliveryNote: {
-      ru: "Бесплатная доставка по квадрату. За его пределами стоимость уточнит оператор.",
-      kk: "Шаршы аумағында жеткізу тегін. Одан тыс жерге жеткізу құнын оператор нақтылайды."
+      ru: "Бесплатная доставка по квадрату.",
+      kk: "Шаршы аумағында жеткізу тегін."
     },
     paymentNote: {
-      ru: "Оплата: Kaspi QR, наличные, банковский перевод. Kaspi Red — +10% к сумме заказа.",
-      kk: "Төлем: Kaspi QR, қолма-қол, банктік аударым. Kaspi Red — тапсырыс сомасына +10%."
+      ru: "Оплата: Kaspi QR. Kaspi Red — +15% к сумме заказа.",
+      kk: "Төлем: Kaspi QR. Kaspi Red — тапсырыс сомасына +15%."
     }
   },
   ui: {
@@ -933,11 +980,11 @@ const priceData = {
       order: "Заказать в WhatsApp",
       preorder: "Отправить предзаказ в WhatsApp",
       preorderWarn: "Сейчас заказы не принимаются (приём до {time}). Можно отправить предзаказ — оператор ответит, когда откроемся.",
-      fromNote: "Цена пиццы — за минимальный размер, размер уточнит оператор",
+      fromNote: "Цена «от» — за минимальный вариант, точную цену уточнит оператор",
       msgPre: "ПРЕДЗАКАЗ",
       msgHello: "Здравствуйте! Заказ с сайта {name}:",
       msgLine: "{n}. {name} × {qty} — {sum}",
-      msgSizeNote: " (размер уточнить)",
+      msgSizeNote: " (вариант уточнить)",
       msgSubtotal: "Сумма: {sum}",
       msgDelivery: "Доставка: {sum}",
       msgTotal: "Итого: {sum}",
@@ -1043,11 +1090,11 @@ const priceData = {
       order: "WhatsApp арқылы тапсырыс беру",
       preorder: "WhatsApp арқылы алдын ала тапсырыс жіберу",
       preorderWarn: "Қазір тапсырыс қабылданбайды (қабылдау {time} дейін). Алдын ала тапсырыс жіберуге болады — ашылғанда оператор жауап береді.",
-      fromNote: "Пицца бағасы — ең кіші өлшемі үшін, өлшемін оператор нақтылайды",
+      fromNote: "«Бастап» бағасы — ең кіші нұсқа үшін, нақты бағасын оператор нақтылайды",
       msgPre: "АЛДЫН АЛА ТАПСЫРЫС",
       msgHello: "Сәлеметсіз бе! {name} сайтынан тапсырыс:",
       msgLine: "{n}. {name} × {qty} — {sum}",
-      msgSizeNote: " (өлшемін нақтылау)",
+      msgSizeNote: " (нұсқасын нақтылау)",
       msgSubtotal: "Сомасы: {sum}",
       msgDelivery: "Жеткізу: {sum}",
       msgTotal: "Барлығы: {sum}",
@@ -1059,238 +1106,394 @@ const priceData = {
   },
 
   categories: [
-    // ───────────── КОМБО ─────────────
+    // ───────────── СЕТЫ · 10–20 ШТ СУШИ ─────────────
     {
-      id: "combo",
+      id: "sety-10-20",
       illustration: "food-combo",
-      name: { ru: "Комбо", kk: "Комбо" },
+      name: { ru: "Сеты · 10–20 шт суши", kk: "Сеттер · 10–20 дана суши" },
       items: [
-        { id: "oskar", illustration: "food-combo", name: { ru: "Комбо «OSKAR»", kk: "«OSKAR» комбосы" }, price: { amount: 11990 }, hit: true,
-          desc: { ru: "2 пиццы, 2 порции картофеля фри, 2 соуса, куриные крылышки (2 порции), Coca-Cola 2 шт.", kk: "2 пицца, 2 порция фри картобы, 2 тұздық, тауық қанаттары (2 порция), Coca-Cola 2 дана" }
-        } // [?]
+        { id: "set-banzay", illustration: "food-combo", name: { ru: "Банзай", kk: "Банзай" }, price: { amount: 4790 },
+          desc: { ru: "10 шт суши, пицца Диабло, 6 шт чикен, компот 1 л", kk: "10 дана суши, Диабло пиццасы, 6 дана чикен, компот 1 л" } }, // 1-2-3
+        { id: "set-sengoku", illustration: "food-combo", name: { ru: "Сэнгоку", kk: "Сэнгоку" }, price: { amount: 4990 },
+          desc: { ru: "20 шт суши, пицца Пепперони, пончик", kk: "20 дана суши, Пепперони пиццасы, пончик" } }, // 1-3-5
+        { id: "set-lyubimoy", illustration: "food-combo", name: { ru: "Любимой", kk: "Любимой" }, price: { amount: 5290 },
+          desc: { ru: "10 шт суши, пицца Пепперони, пончик, сырные палочки", kk: "10 дана суши, Пепперони пиццасы, пончик, ірімшік таяқшалары" } }, // 2-2-3
+        { id: "set-voda", illustration: "food-combo", name: { ru: "Вода", kk: "Вода" }, price: { amount: 5390 },
+          desc: { ru: "20 шт суши, пицца Болоньезе, фри, компот 1 л", kk: "20 дана суши, Болоньезе пиццасы, фри, компот 1 л" } }, // 2-2-2
+        { id: "set-merkuriy", illustration: "food-combo", name: { ru: "Меркурий", kk: "Меркурий" }, price: { amount: 5990 },
+          desc: { ru: "20 шт суши, пицца Ассорти, 10 шт чикен", kk: "20 дана суши, Ассорти пиццасы, 10 дана чикен" } }, // 1-1-5
+        { id: "set-tsvetushchie-vkusy", illustration: "food-combo", name: { ru: "Цветущие вкусы", kk: "Цветущие вкусы" }, price: { amount: 6190 },
+          desc: { ru: "20 шт суши, пицца 4 сезона, 8 крылышек, компот 1 л", kk: "20 дана суши, 4 маусым пиццасы, 8 тауық қанаты, компот 1 л" } }, // 5-3-3
+        { id: "set-miks", illustration: "food-combo", name: { ru: "Микс", kk: "Микс" }, price: { amount: 6290 },
+          desc: { ru: "20 шт суши, пицца 4 сезона, 8 шт чикен, фри", kk: "20 дана суши, 4 маусым пиццасы, 8 дана чикен, фри" } }, // 3-1-2
+        { id: "set-lovi-vayb", illustration: "food-combo", name: { ru: "Лови вайб", kk: "Лови вайб" }, price: { amount: 6390 },
+          desc: { ru: "20 шт суши, 10 крылышек, пицца Пепперони, фри 2 шт", kk: "20 дана суши, 10 тауық қанаты, Пепперони пиццасы, фри 2 дана" } }, // 4-2-4
+        { id: "set-feya-i-belyy-kit", illustration: "food-combo", name: { ru: "Фея и белый кит", kk: "Фея и белый кит" }, price: { amount: 6490 },
+          desc: { ru: "20 шт суши, пицца 4 сезона, сырные палочки, фри, компот 1 л", kk: "20 дана суши, 4 маусым пиццасы, ірімшік таяқшалары, фри, компот 1 л" } }, // 2-1-3
+        { id: "set-sub-zero", illustration: "food-combo", name: { ru: "Sub Zero", kk: "Sub Zero" }, price: { amount: 6990 },
+          desc: { ru: "20 шт суши, фри, 10 шт чикен, кола 1 л", kk: "20 дана суши, фри, 10 дана чикен, кола 1 л" } }, // 4-3-4
+        { id: "set-na-dvoikh", illustration: "food-combo", name: { ru: "На двоих", kk: "На двоих" }, price: { amount: 6990 },
+          desc: { ru: "20 шт суши, пицца 4 сезона, 16 крылышек, фри, компот 1 л", kk: "20 дана суши, 4 маусым пиццасы, 16 тауық қанаты, фри, компот 1 л" } }, // 6-1-4
+        { id: "set-neptun", illustration: "food-combo", name: { ru: "Нептун", kk: "Нептун" }, price: { amount: 7290 },
+          desc: { ru: "20 шт суши, 16 шт чикен, 2 фри, компот 1 л", kk: "20 дана суши, 16 дана чикен, 2 фри, компот 1 л" } }, // 1-3-4
+        { id: "set-mars", illustration: "food-combo", name: { ru: "Марс", kk: "Марс" }, price: { amount: 7390 },
+          desc: { ru: "20 шт суши, 2 пиццы, фри, 6 шт чикен, кола 1 л", kk: "20 дана суши, 2 пицца, фри, 6 дана чикен, кола 1 л" } }, // 2-3-4
+        { id: "set-podkabluchnik", illustration: "food-combo", name: { ru: "Подкаблучник", kk: "Подкаблучник" }, price: { amount: 7500 },
+          desc: { ru: "20 шт суши, 16 шт чикен, кола 1 л, пицца Маргарита", kk: "20 дана суши, 16 дана чикен, кола 1 л, Маргарита пиццасы" } }, // 3-1-1
+        { id: "set-leto", illustration: "food-combo", name: { ru: "Лето", kk: "Лето" }, price: { amount: 7990 },
+          desc: { ru: "20 шт суши, пицца 4 сезона, 8 шт чикен, корн-доги, наггетсы, фри, компот 1 л", kk: "20 дана суши, 4 маусым пиццасы, 8 дана чикен, корн-догтар, наггетстер, фри, компот 1 л" } }, // 2-2-4
+        { id: "set-barbi", illustration: "food-combo", name: { ru: "Барби", kk: "Барби" }, price: { amount: 7990 },
+          desc: { ru: "20 шт суши, суши-буррито с курицей, 10 крылышек, пицца Маргарита, кола 1 л", kk: "20 дана суши, тауық етімен суши-буррито, 10 тауық қанаты, Маргарита пиццасы, кола 1 л" } }, // 4-2-3
+        { id: "set-pluton", illustration: "food-combo", name: { ru: "Плутон", kk: "Плутон" }, price: { amount: 8290 },
+          desc: { ru: "10 шт суши, 2 пиццы, 16 крылышек, сырные палочки 6 шт, компот 1 л", kk: "10 дана суши, 2 пицца, 16 тауық қанаты, ірімшік таяқшалары 6 дана, компот 1 л" } }, // 5-2-2
+        { id: "set-uran", illustration: "food-combo", name: { ru: "Уран", kk: "Уран" }, price: { amount: 8490 },
+          desc: { ru: "20 шт суши, пицца 2 сезона, корн-дог, фри, 16 шт чикен, компот 1 л", kk: "20 дана суши, 2 маусым пиццасы, корн-дог, фри, 16 дана чикен, компот 1 л" } }, // 2-2-5
+        { id: "set-probuzhdenie-vkusa", illustration: "food-combo", name: { ru: "Пробуждение вкуса", kk: "Пробуждение вкуса" }, price: { amount: 10990 },
+          desc: { ru: "20 шт суши, 2 пиццы, 16 крылышек, фри, наггетсы, сырные палочки 6 шт, корн-дог", kk: "20 дана суши, 2 пицца, 16 тауық қанаты, фри, наггетстер, ірімшік таяқшалары 6 дана, корн-дог" } } // 5-3-2
       ]
     },
-    // ───────────── ХОЛОДНЫЕ РОЛЛЫ ─────────────
+    // ───────────── СЕТЫ · 30 ШТ СУШИ ─────────────
     {
-      id: "cold-rolls",
-      illustration: "food-rolls",
-      name: { ru: "Холодные роллы", kk: "Суық роллдар" },
+      id: "sety-30",
+      illustration: "food-combo",
+      name: { ru: "Сеты · 30 шт суши", kk: "Сеттер · 30 дана суши" },
       items: [
-        { id: "philadelphia-classic", illustration: "food-rolls", name: { ru: "Филадельфия классическая", kk: "Классикалық Филадельфия" }, price: { amount: 2200 }, pieces: 10, hit: true,
-          desc: { ru: "нори, рис, сыр, лосось", kk: "нори, күріш, ірімшік, лосось" }
-        },
-        { id: "philadelphia-cucumber", illustration: "food-rolls", name: { ru: "Филадельфия с огурцом", kk: "Қиярлы Филадельфия" }, price: { amount: 2300 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, огурец, лосось", kk: "нори, күріш, ірімшік, қияр, лосось" }
-        },
-        { id: "oishi", illustration: "food-rolls", name: { ru: "Оиси", kk: "Оиси" }, price: { amount: 2800 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, лосось, угорь, огурец, зелёный лук, тобико, кунжут, розовый соус", kk: "нори, күріш, ірімшік, лосось, жыланбалық, қияр, жасыл пияз, тобико, күнжіт, қызғылт тұздық" }
-        },
-        { id: "philadelphia-grill", illustration: "food-rolls", name: { ru: "Филадельфия гриль", kk: "Филадельфия гриль" }, price: { amount: 2300 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, лосось, унаги соус", kk: "нори, күріш, ірімшік, лосось, унаги тұздығы" }
-        }, // [?]
-        { id: "antistress", illustration: "food-rolls", name: { ru: "Антистресс", kk: "Антистресс" }, price: { amount: 2400 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, лосось, унаги соус, кунжут, жареный лук", kk: "нори, күріш, ірімшік, лосось, унаги тұздығы, күнжіт, қуырылған пияз" }
-        },
-        { id: "philadelphia-lux", illustration: "food-rolls", name: { ru: "Филадельфия люкс с икрой", kk: "Уылдырықты Филадельфия люкс" }, price: { amount: 2500 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, лосось, икра", kk: "нори, күріш, ірімшік, лосось, уылдырық" }
-        },
-        { id: "philadelphia-light", illustration: "food-rolls", name: { ru: "Филадельфия лайт", kk: "Филадельфия лайт" }, price: { amount: 1600 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, огурец", kk: "нори, күріш, ірімшік, қияр" }
-        }, // [?]
-        { id: "canada", illustration: "food-rolls", name: { ru: "Канада", kk: "Канада" }, price: { amount: 2500 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, угорь, лосось, огурец", kk: "нори, күріш, ірімшік, жыланбалық, лосось, қияр" }
-        }, // [?]
-        { id: "dragon", illustration: "food-rolls", name: { ru: "Дракон", kk: "Дракон" }, price: { amount: 2490 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, угорь, краб, огурец, унаги соус, кунжут", kk: "нори, күріш, ірімшік, жыланбалық, краб, қияр, унаги тұздығы, күнжіт" }
-        },
-        { id: "unagi-philadelphia", illustration: "food-rolls", name: { ru: "Унаги Филадельфия", kk: "Унаги Филадельфия" }, price: { amount: 2500 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, угорь, лосось, унаги соус, кунжут", kk: "нори, күріш, ірімшік, жыланбалық, лосось, унаги тұздығы, күнжіт" }
-        },
-        { id: "belosnezhka", illustration: "food-rolls", name: { ru: "Белоснежка", kk: "Белоснежка" }, price: { amount: 2290 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, креветки, огурец, кунжут", kk: "нори, күріш, ірімшік, асшаян, қияр, күнжіт" }
-        }, // [?]
-        { id: "california", illustration: "food-rolls", name: { ru: "Калифорния", kk: "Калифорния" }, price: { amount: 2199 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, краб, огурец, тобико", kk: "нори, күріш, ірімшік, краб, қияр, тобико" }
-        },
-        { id: "lava", illustration: "food-rolls", name: { ru: "Лава", kk: "Лава" }, price: { amount: 2490 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, огурец, лосось, тобико, кунжут", kk: "нори, күріш, ірімшік, қияр, лосось, тобико, күнжіт" }
-        }, // [?]
-        { id: "alaska", illustration: "food-rolls", name: { ru: "Аляска", kk: "Аляска" }, price: { amount: 2290 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, лосось, огурец, кунжут", kk: "нори, күріш, ірімшік, лосось, қияр, күнжіт" }
-        },
-        { id: "tyoshcha", illustration: "food-rolls", name: { ru: "Тёща", kk: "Тёща" }, price: { amount: 1990 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, лосось, огурец, икра", kk: "нори, күріш, ірімшік, лосось, қияр, уылдырық" }
-        },
-        { id: "almatinka", illustration: "food-rolls", name: { ru: "Алматинка", kk: "Алматинка" }, price: { amount: 2100 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, огурец, курица", kk: "нори, күріш, ірімшік, қияр, тауық еті" }
-        }, // [?]
-        { id: "bonito", illustration: "food-rolls", name: { ru: "Бонито в стружке тунца", kk: "Тунец жаңқасындағы Бонито" }, price: { amount: 2199 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, жареный лосось, огурец, стружка тунца", kk: "нори, күріш, ірімшік, қуырылған лосось, қияр, тунец жаңқасы" }
-        },
-        { id: "sancho-pancho", illustration: "food-rolls", name: { ru: "Санчо-Панчо", kk: "Санчо-Панчо" }, price: { amount: 1990 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, курица, огурец, томат", kk: "нори, күріш, ірімшік, тауық еті, қияр, қызанақ" }
-        },
-        { id: "chicken-sesame", illustration: "food-rolls", name: { ru: "Чикен ролл в кунжуте", kk: "Күнжіттегі чикен ролл" }, price: { amount: 1890 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, курица, кунжут", kk: "нори, күріш, ірімшік, тауық еті, күнжіт" }
-        },
-        { id: "busido", illustration: "food-rolls", name: { ru: "Бусидо", kk: "Бусидо" }, price: { amount: 1890 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, лосось, огурец, сырный соус, кунжут", kk: "нори, күріш, ірімшік, лосось, қияр, ірімшік тұздығы, күнжіт" }
-        },
-        { id: "tomato", illustration: "food-rolls", name: { ru: "Томато", kk: "Томато" }, price: { amount: 1100 }, pieces: 10, veg: true,
-          desc: { ru: "нори, рис, сыр, помидор", kk: "нори, күріш, ірімшік, қызанақ" }
-        }
+        { id: "set-brat-ili-brak-3", illustration: "food-combo", name: { ru: "Брат или брак 3", kk: "Брат или брак 3" }, price: { amount: 6290 },
+          desc: { ru: "30 шт суши, пицца Маргарита, кола 1 л, компот 1 л", kk: "30 дана суши, Маргарита пиццасы, кола 1 л, компот 1 л" } }, // 6-1-2
+        { id: "set-samaya-vyshka", illustration: "food-combo", name: { ru: "Самая вышка", kk: "Самая вышка" }, price: { amount: 6390 },
+          desc: { ru: "30 шт суши, пицца Пепперони, пицца Маргарита", kk: "30 дана суши, Пепперони пиццасы, Маргарита пиццасы" } }, // 6-3-5
+        { id: "set-kosmos", illustration: "food-combo", name: { ru: "Космос", kk: "Космос" }, price: { amount: 6490 },
+          desc: { ru: "30 шт суши, пицца Пепперони, фри, компот 1 л", kk: "30 дана суши, Пепперони пиццасы, фри, компот 1 л" } }, // 1-2-1
+        { id: "set-flesh", illustration: "food-combo", name: { ru: "Флэш", kk: "Флэш" }, price: { amount: 6990 },
+          desc: { ru: "30 шт суши, пицца Маргарита, 8 шт чикен, кола 1 л", kk: "30 дана суши, Маргарита пиццасы, 8 дана чикен, кола 1 л" } }, // 1-3-2
+        { id: "set-yupiter", illustration: "food-combo", name: { ru: "Юпитер", kk: "Юпитер" }, price: { amount: 6990 },
+          desc: { ru: "30 шт суши, пицца Маргарита, 10 шт чикен", kk: "30 дана суши, Маргарита пиццасы, 10 дана чикен" } }, // 2-1-2
+        { id: "set-zemlya", illustration: "food-combo", name: { ru: "Земля", kk: "Земля" }, price: { amount: 6990 },
+          desc: { ru: "30 шт суши, пицца Маргарита, 10 шт чикен", kk: "30 дана суши, Маргарита пиццасы, 10 дана чикен" } }, // 2-1-4
+        { id: "set-zelyonaya-svezhest", illustration: "food-combo", name: { ru: "Зелёная свежесть", kk: "Зелёная свежесть" }, price: { amount: 6990 },
+          desc: { ru: "30 шт суши, пицца Курица с грибами, 10 крылышек, компот 1 л", kk: "30 дана суши, Тауық еті мен саңырауқұлақ пиццасы, 10 тауық қанаты, компот 1 л" } }, // 5-2-4
+        { id: "set-venera", illustration: "food-combo", name: { ru: "Венера", kk: "Венера" }, price: { amount: 7290 },
+          desc: { ru: "30 шт суши, пицца Курица с грибами, 10 шт чикен", kk: "30 дана суши, Тауық еті мен саңырауқұлақ пиццасы, 10 дана чикен" } }, // 1-2-2
+        { id: "set-pekin", illustration: "food-combo", name: { ru: "Пекин", kk: "Пекин" }, price: { amount: 7290 },
+          desc: { ru: "30 шт суши, пицца Маргарита, 8 крылышек", kk: "30 дана суши, Маргарита пиццасы, 8 тауық қанаты" } }, // 4-3-1
+        { id: "set-onlayn", illustration: "food-combo", name: { ru: "Онлайн", kk: "Онлайн" }, price: { amount: 7499 },
+          desc: { ru: "30 шт суши, пончик 4 шт, 5 крылышек, фри, пицца Маргарита", kk: "30 дана суши, пончик 4 дана, 5 тауық қанаты, фри, Маргарита пиццасы" } }, // 6-2-5
+        { id: "set-ekspress", illustration: "food-combo", name: { ru: "Экспресс", kk: "Экспресс" }, price: { amount: 7990 },
+          desc: { ru: "30 шт суши, пицца 2 сезона, 8 крылышек", kk: "30 дана суши, 2 маусым пиццасы, 8 тауық қанаты" } }, // 4-2-1
+        { id: "set-molodaya-vesna", illustration: "food-combo", name: { ru: "Молодая весна", kk: "Молодая весна" }, price: { amount: 8190 },
+          desc: { ru: "30 шт суши, пицца Пепперони, фри, наггетсы, 10 крылышек, компот 1 л", kk: "30 дана суши, Пепперони пиццасы, фри, наггетстер, 10 тауық қанаты, компот 1 л" } }, // 5-2-5
+        { id: "set-sled-killera", illustration: "food-combo", name: { ru: "След киллера", kk: "След киллера" }, price: { amount: 9490 },
+          desc: { ru: "30 шт суши, пицца Курица с грибами, кола 1 л, 16 крылышек, фри, компот 1 л", kk: "30 дана суши, Тауық еті мен саңырауқұлақ пиццасы, кола 1 л, 16 тауық қанаты, фри, компот 1 л" } }, // 5-2-1
+        { id: "set-solnechnoe-naslazhdenie", illustration: "food-combo", name: { ru: "Солнечное наслаждение", kk: "Солнечное наслаждение" }, price: { amount: 9990 },
+          desc: { ru: "30 шт суши, 2 пиццы, фри, наггетсы, 6 крылышек, кола 1 л", kk: "30 дана суши, 2 пицца, фри, наггетстер, 6 тауық қанаты, кола 1 л" } } // 4-3-5
       ]
     },
-    // ───────────── МИНИ РОЛЛЫ ─────────────
+    // ───────────── СЕТЫ · 40–50 ШТ СУШИ ─────────────
     {
-      id: "mini-rolls",
-      illustration: "food-rolls",
-      name: { ru: "Мини роллы", kk: "Мини роллдар" },
+      id: "sety-40-50",
+      illustration: "food-combo",
+      name: { ru: "Сеты · 40–50 шт суши", kk: "Сеттер · 40–50 дана суши" },
       items: [
-        { id: "fried-salmon-roll", illustration: "food-rolls", name: { ru: "Ролл с жареным лососем", kk: "Қуырылған лосось қосылған ролл" }, price: { amount: 1890 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, огурец, жареный лосось, унаги соус", kk: "нори, күріш, ірімшік, қияр, қуырылған лосось, унаги тұздығы" }
-        },
-        { id: "kappa-maki", illustration: "food-rolls", name: { ru: "Каппа маки", kk: "Каппа маки" }, price: { amount: 1100 }, pieces: 10, veg: true,
-          desc: { ru: "нори, рис, огурец", kk: "нори, күріш, қияр" }
-        },
-        { id: "ikura-lotus", illustration: "food-rolls", name: { ru: "Икура лотос", kk: "Икура лотос" }, price: { amount: 1000 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, икра", kk: "нори, күріш, ірімшік, уылдырық" }
-        }, // [?]
-        { id: "hosomaki", illustration: "food-rolls", name: { ru: "Хосомаки", kk: "Хосомаки" }, price: { amount: 1590 }, pieces: 10,
-          desc: { ru: "нори, рис, лосось, огурец", kk: "нори, күріш, лосось, қияр" }
-        },
-        { id: "sake-maki", illustration: "food-rolls", name: { ru: "Сякэ маки", kk: "Сякэ маки" }, price: { amount: 1490 }, pieces: 10,
-          desc: { ru: "нори, рис, лосось", kk: "нори, күріш, лосось" }
-        }
+        { id: "set-ekonom", illustration: "food-combo", name: { ru: "Эконом", kk: "Эконом" }, price: { amount: 5290 },
+          desc: { ru: "40 шт суши, фри", kk: "40 дана суши, фри" } }, // 6-3-3
+        { id: "set-milan", illustration: "food-combo", name: { ru: "Милан", kk: "Милан" }, price: { amount: 5700 },
+          desc: { ru: "40 шт суши, пицца Пепперони", kk: "40 дана суши, Пепперони пиццасы" } }, // 4-1-2
+        { id: "set-alfavit", illustration: "food-combo", name: { ru: "Алфавит", kk: "Алфавит" }, price: { amount: 5890 },
+          desc: { ru: "40 шт суши, пицца Маргарита", kk: "40 дана суши, Маргарита пиццасы" } }, // 3-1-4
+        { id: "set-saturn", illustration: "food-combo", name: { ru: "Сатурн", kk: "Сатурн" }, price: { amount: 5990 },
+          desc: { ru: "40 шт суши, пицца Пепперони, компот 1 л", kk: "40 дана суши, Пепперони пиццасы, компот 1 л" } }, // 6-1-3
+        { id: "set-tsezar", illustration: "food-combo", name: { ru: "Цезарь", kk: "Цезарь" }, price: { amount: 6199 },
+          desc: { ru: "40 шт суши, сырные палочки", kk: "40 дана суши, ірімшік таяқшалары" } }, // 6-3-2
+        { id: "set-aristokrat", illustration: "food-combo", name: { ru: "Аристократ", kk: "Аристократ" }, price: { amount: 6290 },
+          desc: { ru: "40 шт суши, пицца Пепперони", kk: "40 дана суши, Пепперони пиццасы" } }, // 3-2-2
+        { id: "set-khitovyy", illustration: "food-combo", name: { ru: "Хитовый", kk: "Хитовый" }, price: { amount: 6490 },
+          desc: { ru: "40 шт суши, пицца Маргарита, кола 1 л", kk: "40 дана суши, Маргарита пиццасы, кола 1 л" } }, // 2-3-1
+        { id: "set-alladin", illustration: "food-combo", name: { ru: "Алладин", kk: "Алладин" }, price: { amount: 6700 },
+          desc: { ru: "40 шт суши, пицца Куриная, 6 сырных палочек", kk: "40 дана суши, Тауық етімен пиццасы, 6 ірімшік таяқшасы" } }, // 3-2-5
+        { id: "set-beyish", illustration: "food-combo", name: { ru: "Бейиш", kk: "Бейиш" }, price: { amount: 6890 },
+          desc: { ru: "40 шт суши, пицца Маргарита, кола 1 л, фри", kk: "40 дана суши, Маргарита пиццасы, кола 1 л, фри" } }, // 2-1-1
+        { id: "set-luna", illustration: "food-combo", name: { ru: "Луна", kk: "Луна" }, price: { amount: 6990 },
+          desc: { ru: "40 шт суши, пицца Маргарита, фри", kk: "40 дана суши, Маргарита пиццасы, фри" } }, // 2-1-5
+        { id: "set-5-volna", illustration: "food-combo", name: { ru: "5 волна", kk: "5 волна" }, price: { amount: 7000 },
+          desc: { ru: "50 шт суши, пицца Пепперони", kk: "50 дана суши, Пепперони пиццасы" } }, // 3-2-1
+        { id: "set-elit", illustration: "food-combo", name: { ru: "Элит", kk: "Элит" }, price: { amount: 7000 },
+          desc: { ru: "50 шт суши, пицца Пепперони, компот 1 л", kk: "50 дана суши, Пепперони пиццасы, компот 1 л" } }, // 3-3-4
+        { id: "set-sakhara", illustration: "food-combo", name: { ru: "Сахара", kk: "Сахара" }, price: { amount: 7190 },
+          desc: { ru: "50 шт суши, пицца Маргарита, компот 1 л", kk: "50 дана суши, Маргарита пиццасы, компот 1 л" } }, // 2-3-3
+        { id: "set-sensata", illustration: "food-combo", name: { ru: "Sensata", kk: "Sensata" }, price: { amount: 7190 },
+          desc: { ru: "40 шт суши, пицца Пепперони, пицца Куриная", kk: "40 дана суши, Пепперони пиццасы, Тауық етімен пиццасы" } }, // 5-3-5
+        { id: "set-kok-zhaylau", illustration: "food-combo", name: { ru: "Кок жайлау", kk: "Көк жайлау" }, price: { amount: 7390 },
+          desc: { ru: "40 шт суши, пицца Пепперони с помидорами, Пепси 1 л", kk: "40 дана суши, Қызанақты Пепперони пиццасы, Пепси 1 л" } }, // 6-1-1
+        { id: "set-karmen", illustration: "food-combo", name: { ru: "Кармен", kk: "Кармен" }, price: { amount: 7500 },
+          desc: { ru: "40 шт суши, фри, пицца Маргарита, пицца Пепперони", kk: "40 дана суши, фри, Маргарита пиццасы, Пепперони пиццасы" } }, // 3-3-3
+        { id: "set-khodovoy", illustration: "food-combo", name: { ru: "Ходовой", kk: "Ходовой" }, price: { amount: 7990 },
+          desc: { ru: "40 шт суши, пицца Маргарита, пицца Пепперони, кола 1 л", kk: "40 дана суши, Маргарита пиццасы, Пепперони пиццасы, кола 1 л" } }, // 3-2-3
+        { id: "set-sansey", illustration: "food-combo", name: { ru: "Сансей", kk: "Сансей" }, price: { amount: 7990 },
+          desc: { ru: "50 шт суши, 2 пиццы, компот 1 л", kk: "50 дана суши, 2 пицца, компот 1 л" } }, // 5-1-5
+        { id: "set-kombo", illustration: "food-combo", name: { ru: "Комбо", kk: "Комбо" }, price: { amount: 7990 },
+          desc: { ru: "40 шт суши, пицца Пепперони, 8 крылышек, компот 1 л", kk: "40 дана суши, Пепперони пиццасы, 8 тауық қанаты, компот 1 л" } }, // 6-1-5
+        { id: "set-druzya", illustration: "food-combo", name: { ru: "Друзья", kk: "Друзья" }, price: { amount: 7990 },
+          desc: { ru: "50 шт суши, пицца Пепперони, кола 1 л", kk: "50 дана суши, Пепперони пиццасы, кола 1 л" } }, // 6-2-2
+        { id: "set-fila", illustration: "food-combo", name: { ru: "Фила", kk: "Фила" }, price: { amount: 8000 },
+          desc: { ru: "40 шт суши, пицца Сёмга, кола 1 л", kk: "40 дана суши, Сёмга пиццасы, кола 1 л" } }, // 6-2-1
+        { id: "set-vozdukh", illustration: "food-combo", name: { ru: "Воздух", kk: "Воздух" }, price: { amount: 8490 },
+          desc: { ru: "40 шт суши, пицца Пепперони, 16 шт чикен, компот 1 л", kk: "40 дана суши, Пепперони пиццасы, 16 дана чикен, компот 1 л" } }, // 2-3-2
+        { id: "set-dzhekpot", illustration: "food-combo", name: { ru: "Джекпот", kk: "Джекпот" }, price: { amount: 8800 },
+          desc: { ru: "40 шт суши, 2 пиццы, фри", kk: "40 дана суши, 2 пицца, фри" } }, // 4-1-5
+        { id: "set-dyuna", illustration: "food-combo", name: { ru: "Дюна", kk: "Дюна" }, price: { amount: 9990 },
+          desc: { ru: "40 шт суши, пицца Пепперони, 20 шт чикен, компот 1 л", kk: "40 дана суши, Пепперони пиццасы, 20 дана чикен, компот 1 л" } }, // 2-3-5
+        { id: "set-arena", illustration: "food-combo", name: { ru: "Арена", kk: "Арена" }, price: { amount: 9990 },
+          desc: { ru: "40 шт суши, 2 пиццы, компот 1 л", kk: "40 дана суши, 2 пицца, компот 1 л" } }, // 4-3-3
+        { id: "set-aleks", illustration: "food-combo", name: { ru: "Алекс", kk: "Алекс" }, price: { amount: 10990 },
+          desc: { ru: "40 шт суши, пицца Пепперони, 16 крылышек", kk: "40 дана суши, Пепперони пиццасы, 16 тауық қанаты" } }, // 4-2-5
+        { id: "set-vkusnaya-vesna", illustration: "food-combo", name: { ru: "Вкусная весна", kk: "Вкусная весна" }, price: { amount: 11990 },
+          desc: { ru: "40 шт суши, 2 пиццы, сырные палочки 6 шт, корн-доги 4 шт, 10 крылышек, кола 1 л", kk: "40 дана суши, 2 пицца, ірімшік таяқшалары 6 дана, корн-догтар 4 дана, 10 тауық қанаты, кола 1 л" } } // 5-3-1
+      ]
+    },
+    // ───────────── СЕТЫ · 60–90 ШТ СУШИ ─────────────
+    {
+      id: "sety-60-90",
+      illustration: "food-combo",
+      name: { ru: "Сеты · 60–90 шт суши", kk: "Сеттер · 60–90 дана суши" },
+      items: [
+        { id: "set-yakudza", illustration: "food-combo", name: { ru: "Якудза", kk: "Якудза" }, price: { amount: 6990 },
+          desc: { ru: "60 шт суши", kk: "60 дана суши" } }, // 6-2-4
+        { id: "set-baza", illustration: "food-combo", name: { ru: "База", kk: "База" }, price: { amount: 7990 },
+          desc: { ru: "60 шт суши, пицца Пепперони", kk: "60 дана суши, Пепперони пиццасы" } }, // 1-3-1
+        { id: "set-mayami", illustration: "food-combo", name: { ru: "Маями", kk: "Маями" }, price: { amount: 7990 },
+          desc: { ru: "60 шт суши, пицца Маргарита, пицца Пепперони", kk: "60 дана суши, Маргарита пиццасы, Пепперони пиццасы" } }, // 3-2-4
+        { id: "set-tornado", illustration: "food-combo", name: { ru: "Торнадо", kk: "Торнадо" }, price: { amount: 7990 },
+          desc: { ru: "70 шт суши, кола 1 л", kk: "70 дана суши, кола 1 л" } }, // 6-3-1
+        { id: "set-samuray", illustration: "food-combo", name: { ru: "Самурай", kk: "Самурай" }, price: { amount: 8490 },
+          desc: { ru: "60 шт суши, пицца Пепперони, фри", kk: "60 дана суши, Пепперони пиццасы, фри" } }, // 1-3-3
+        { id: "set-vygodnyy", illustration: "food-combo", name: { ru: "Выгодный", kk: "Выгодный" }, price: { amount: 8690 },
+          desc: { ru: "70 шт суши, пицца Пепперони, фри", kk: "70 дана суши, Пепперони пиццасы, фри" } }, // 2-2-1
+        { id: "set-in-yan", illustration: "food-combo", name: { ru: "Инь-Янь", kk: "Инь-Янь" }, price: { amount: 8999 },
+          desc: { ru: "60 шт суши, 2 пиццы, фри", kk: "60 дана суши, 2 пицца, фри" } }, // 3-3-1
+        { id: "set-minus-odin", illustration: "food-combo", name: { ru: "Минус один", kk: "Минус один" }, price: { amount: 9300 },
+          desc: { ru: "60 шт суши, пицца Маргарита, пицца Пепперони", kk: "60 дана суши, Маргарита пиццасы, Пепперони пиццасы" } }, // 1-1-2
+        { id: "set-mega-miks", illustration: "food-combo", name: { ru: "Мега микс", kk: "Мега микс" }, price: { amount: 9990 },
+          desc: { ru: "80 шт суши, пицца Пепперони", kk: "80 дана суши, Пепперони пиццасы" } }, // 3-3-5
+        { id: "set-dzhim-kerri", illustration: "food-combo", name: { ru: "Джим Керри", kk: "Джим Керри" }, price: { amount: 9999 },
+          desc: { ru: "60 шт суши, 2 пиццы, компот 1 л", kk: "60 дана суши, 2 пицца, компот 1 л" } }, // 6-3-4
+        { id: "set-iz-90-kh", illustration: "food-combo", name: { ru: "Из 90-х", kk: "Из 90-х" }, price: { amount: 10490 },
+          desc: { ru: "90 шт суши, кола 1 л", kk: "90 дана суши, кола 1 л" } }, // 3-1-5
+        { id: "set-populyarnyy", illustration: "food-combo", name: { ru: "Популярный", kk: "Популярный" }, price: { amount: 10990 },
+          desc: { ru: "90 шт суши", kk: "90 дана суши" } }, // 3-3-2
+        { id: "set-sokol", illustration: "food-combo", name: { ru: "Сокол", kk: "Сокол" }, price: { amount: 10990 },
+          desc: { ru: "90 шт суши, пицца Пепперони", kk: "90 дана суши, Пепперони пиццасы" } }, // 6-2-3
+        { id: "set-ay-luna", illustration: "food-combo", name: { ru: "Ай-Луна", kk: "Ай-Луна" }, price: { amount: 11000 },
+          desc: { ru: "70 шт суши, пицца Маргарита, пицца Пепперони", kk: "70 дана суши, Маргарита пиццасы, Пепперони пиццасы" } }, // 1-1-1
+        { id: "set-tosi-bosi", illustration: "food-combo", name: { ru: "Тоси-Боси", kk: "Тоси-Боси" }, price: { amount: 11990 },
+          desc: { ru: "70 шт суши, пицца Сырная, пицца Грибная, пицца Маргарита", kk: "70 дана суши, Ірімшікті пиццасы, Саңырауқұлақты пиццасы, Маргарита пиццасы" } }, // 3-1-3
+        { id: "set-korporativ", illustration: "food-combo", name: { ru: "Корпоратив", kk: "Корпоратив" }, price: { amount: 11990 },
+          desc: { ru: "90 шт суши, 3 пиццы", kk: "90 дана суши, 3 пицца" } }, // 4-1-1
+        { id: "set-zimnyaya-skazka", illustration: "food-combo", name: { ru: "Зимняя сказка", kk: "Зимняя сказка" }, price: { amount: 12990 },
+          desc: { ru: "70 шт суши, 3 пиццы, кола 1 л", kk: "70 дана суши, 3 пицца, кола 1 л" } }, // 5-1-4
+        { id: "set-vesennyaya-skazka", illustration: "food-combo", name: { ru: "Весенняя сказка", kk: "Весенняя сказка" }, price: { amount: 13990 },
+          desc: { ru: "60 шт суши, 2 пиццы", kk: "60 дана суши, 2 пицца" } }, // 5-1-3
+        { id: "set-gigant", illustration: "food-combo", name: { ru: "Гигант", kk: "Гигант" }, price: { amount: 18490 },
+          desc: { ru: "60 шт суши, 25 крылышек, 4 пиццы, кола 2 шт", kk: "60 дана суши, 25 тауық қанаты, 4 пицца, кола 2 дана" } } // 4-3-2
+      ]
+    },
+    // ───────────── СЕТЫ · 100+ ШТ СУШИ ─────────────
+    {
+      id: "sety-100",
+      illustration: "food-combo",
+      name: { ru: "Сеты · 100+ шт суши", kk: "Сеттер · 100+ дана суши" },
+      items: [
+        { id: "set-sakharnyy", illustration: "food-combo", name: { ru: "Сахарный", kk: "Сахарный" }, price: { amount: 12490 },
+          desc: { ru: "100 шт суши, пицца Маргарита, пицца Пепперони", kk: "100 дана суши, Маргарита пиццасы, Пепперони пиццасы" } }, // 5-3-4
+        { id: "set-yaposha", illustration: "food-combo", name: { ru: "Япоша", kk: "Япоша" }, price: { amount: 17490 },
+          desc: { ru: "100 шт суши, 3 пиццы, кола 2 л", kk: "100 дана суши, 3 пицца, кола 2 л" } }, // 1-1-4
+        { id: "set-king-kong-godzilla", illustration: "food-combo", name: { ru: "Кинг Конг Годзилла", kk: "Кинг Конг Годзилла" }, price: { amount: 21990 },
+          desc: { ru: "130 шт суши, 4 пиццы, кола 2 л", kk: "130 дана суши, 4 пицца, кола 2 л" } }, // 1-2-4
+        { id: "set-ded-moroz", illustration: "food-combo", name: { ru: "Дед Мороз", kk: "Дед Мороз" }, price: { amount: 21990 },
+          desc: { ru: "130 шт суши, 4 пиццы, кола 2 л", kk: "130 дана суши, 4 пицца, кола 2 л" } }, // 5-1-2
+        { id: "set-snegurochka", illustration: "food-combo", name: { ru: "Снегурочка", kk: "Снегурочка" }, price: { amount: 22990 },
+          desc: { ru: "100 шт суши, 5 пицц, кола 2 л", kk: "100 дана суши, 5 пицца, кола 2 л" } }, // 5-1-1
+        { id: "set-planeta", illustration: "food-combo", name: { ru: "Планета", kk: "Планета" }, price: { amount: 28990 },
+          desc: { ru: "160 шт суши, 6 пицц, 16 шт чикен, кола 2 л", kk: "160 дана суши, 6 пицца, 16 дана чикен, кола 2 л" } }, // 1-1-3
+        { id: "set-vkus-volshebstva", illustration: "food-combo", name: { ru: "Вкус волшебства", kk: "Вкус волшебства" }, price: { amount: 31990 },
+          desc: { ru: "160 шт суши, 6 пицц, 16 крылышек, кола 2 л, подарок", kk: "160 дана суши, 6 пицца, 16 тауық қанаты, кола 2 л, сыйлық" } } // 4-1-3
+      ]
+    },
+    // ───────────── СЕТЫ · ПИЦЦА И ЧИКЕН ─────────────
+    {
+      id: "sety-bez-sushi",
+      illustration: "food-combo",
+      name: { ru: "Сеты · пицца и чикен", kk: "Сеттер · пицца мен чикен" },
+      items: [
+        { id: "set-van-dam", illustration: "food-combo", name: { ru: "Ван Дам", kk: "Ван Дам" }, price: { amount: 6490 },
+          desc: { ru: "пицца Маргарита, пицца Пепперони, 16 шт чикен, кола 1 л", kk: "Маргарита пиццасы, Пепперони пиццасы, 16 дана чикен, кола 1 л" } }, // 1-2-5
+        { id: "set-delyuks", illustration: "food-combo", name: { ru: "Делюкс", kk: "Делюкс" }, price: { amount: 7700 },
+          desc: { ru: "25 крылышек, 2 пиццы Пепперони, кола 2 шт", kk: "25 тауық қанаты, 2 Пепперони пиццасы, кола 2 дана" } }, // 4-2-2
+        { id: "set-cherepashki", illustration: "food-combo", name: { ru: "Черепашки", kk: "Черепашки" }, price: { amount: 9990 },
+          desc: { ru: "6 пицц, подарок", kk: "6 пицца, сыйлық" } }, // 4-1-4
+        { id: "set-oskar", illustration: "food-combo", name: { ru: "Оскар", kk: "Оскар" }, price: { amount: 11990 },
+          desc: { ru: "2 пиццы, 40 шт чикен, кола 2 л, фри 2 шт", kk: "2 пицца, 40 дана чикен, кола 2 л, фри 2 дана" } } // 5-2-3
       ]
     },
     // ───────────── ТЁПЛЫЕ РОЛЛЫ ─────────────
     {
-      id: "warm-rolls",
+      id: "teplye",
       illustration: "food-baked",
       name: { ru: "Тёплые роллы", kk: "Жылы роллдар" },
       items: [
-        { id: "americano", illustration: "food-baked", name: { ru: "Американо", kk: "Американо" }, price: { amount: 1990 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, огурец, лосось, угорь, унаги соус, кунжут", kk: "нори, күріш, ірімшік, қияр, лосось, жыланбалық, унаги тұздығы, күнжіт" }
-        },
+        { id: "americano", illustration: "food-baked", name: { ru: "Американо", kk: "Американо" }, price: { amount: 2190 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурцы, лосось, угорь, унаги соус, кунжут", kk: "нори, күріш, ірімшік, қияр, лосось, жыланбалық, унаги тұздығы, күнжіт" } },
         { id: "fresh", illustration: "food-baked", name: { ru: "Фреш", kk: "Фреш" }, price: { amount: 1990 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, курица, помидор, салат", kk: "нори, күріш, ірімшік, тауық еті, қызанақ, салат жапырағы" }
-        }, // [?]
-        { id: "tempura-fried-salmon", illustration: "food-baked", name: { ru: "Темпура с жареным лососем", kk: "Қуырылған лосось қосылған темпура" }, price: { amount: 1990 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, жареный лосось, унаги соус", kk: "нори, күріш, ірімшік, қуырылған лосось, унаги тұздығы" }
-        }, // [?]
-        { id: "ebi-king", illustration: "food-baked", name: { ru: "Эби кинг", kk: "Эби кинг" }, price: { amount: 2290 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, лосось, креветки, кунжут", kk: "нори, күріш, ірімшік, лосось, асшаян, күнжіт" }
-        },
-        { id: "sake-tempura", illustration: "food-baked", name: { ru: "Сякэ темпура", kk: "Сякэ темпура" }, price: { amount: 1990 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, огурец, лосось", kk: "нори, күріш, ірімшік, қияр, лосось" }
-        },
-        { id: "ebi-hot", illustration: "food-baked", name: { ru: "Эби хот", kk: "Эби хот" }, price: { amount: 1990 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, креветки, огурец, унаги соус", kk: "нори, күріш, ірімшік, асшаян, қияр, унаги тұздығы" }
-        }, // [?]
-        { id: "ebi-tempura", illustration: "food-baked", name: { ru: "Эби темпура", kk: "Эби темпура" }, price: { amount: 1990 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, огурец, креветки", kk: "нори, күріш, ірімшік, қияр, асшаян" }
-        },
-        { id: "escolar", illustration: "food-baked", name: { ru: "Эсколар", kk: "Эсколар" }, price: { amount: 2190 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, огурец, эсколар", kk: "нори, күріш, ірімшік, қияр, эсколар" }
-        }, // [?]
-        { id: "caesar-roll", illustration: "food-baked", name: { ru: "Цезарь ролл", kk: "Цезарь ролл" }, price: { amount: 1890 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, курица, помидор", kk: "нори, күріш, ірімшік, тауық еті, қызанақ" }
-        },
-        { id: "crispy-caesar", illustration: "food-baked", name: { ru: "Криспи Цезарь", kk: "Криспи Цезарь" }, price: { amount: 1890 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, курица, помидор, салат", kk: "нори, күріш, ірімшік, тауық еті, қызанақ, салат жапырағы" }
-        }, // [?]
-        { id: "chuka-hot", illustration: "food-baked", name: { ru: "Чука хот ролл", kk: "Чука хот ролл" }, price: { amount: 2290 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, чука", kk: "нори, күріш, ірімшік, чука" }
-        },
+          desc: { ru: "нори, рис, сыр, курица, огурцы, помидор, майонез", kk: "нори, күріш, ірімшік, тауық еті, қияр, қызанақ, майонез" } },
+        { id: "tempura-s-zharenym-lososem", illustration: "food-baked", name: { ru: "Темпура с жареным лососем", kk: "Қуырылған лосось қосылған темпура" }, price: { amount: 1990 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, жареный лосось, огурцы, унаги соус, кунжут", kk: "нори, күріш, ірімшік, қуырылған лосось, қияр, унаги тұздығы, күнжіт" } },
+        { id: "ebi-king", illustration: "food-baked", name: { ru: "Эби Кинг", kk: "Эби Кинг" }, price: { amount: 2290 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, лосось, креветки, икра", kk: "нори, күріш, ірімшік, лосось, асшаян, уылдырық" } },
+        { id: "syake-tempura", illustration: "food-baked", name: { ru: "Сяке темпура", kk: "Сяке темпура" }, price: { amount: 1990 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурцы, лосось", kk: "нори, күріш, ірімшік, қияр, лосось" } },
+        { id: "ebi-khot", illustration: "food-baked", name: { ru: "Эби хот", kk: "Эби хот" }, price: { amount: 2290 }, pieces: 10,
+          desc: { ru: "нори, рис, огурцы, лист салата, креветки, кимчи соус", kk: "нори, күріш, қияр, салат жапырағы, асшаян, кимчи тұздығы" } },
+        { id: "ebi-tempura", illustration: "food-baked", name: { ru: "Эби темпура", kk: "Эби темпура" }, price: { amount: 2290 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурцы, креветки", kk: "нори, күріш, ірімшік, қияр, асшаян" } },
+        { id: "eskolar", illustration: "food-baked", name: { ru: "Эсколар", kk: "Эсколар" }, price: { amount: 2190 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурцы, лосось, томаго", kk: "нори, күріш, ірімшік, қияр, лосось, томаго" } },
+        { id: "tsezar-roll", illustration: "food-baked", name: { ru: "Цезарь ролл", kk: "Цезарь ролл" }, price: { amount: 1890 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, курица, помидор", kk: "нори, күріш, ірімшік, тауық еті, қызанақ" } },
+        { id: "krispi-tsezar", illustration: "food-baked", name: { ru: "Криспи Цезарь", kk: "Криспи Цезарь" }, price: { amount: 1890 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, курица, помидор, жареный лук", kk: "нори, күріш, ірімшік, тауық еті, қызанақ, қуырылған пияз" } },
+        { id: "chuka-khot-roll", illustration: "food-baked", name: { ru: "Чука хот ролл", kk: "Чука хот ролл" }, price: { amount: 1990 }, pieces: 10,
+          desc: { ru: "нори, рис, чука, ореховый соус, кунжут", kk: "нори, күріш, чука, жаңғақ тұздығы, күнжіт" } },
         { id: "tempura", illustration: "food-baked", name: { ru: "Темпура", kk: "Темпура" }, price: { amount: 1990 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, огурец, лосось", kk: "нори, күріш, ірімшік, қияр, лосось" }
-        },
+          desc: { ru: "нори, рис, сыр, огурцы, лосось", kk: "нори, күріш, ірімшік, қияр, лосось" } },
         { id: "unagi-tempura", illustration: "food-baked", name: { ru: "Унаги темпура", kk: "Унаги темпура" }, price: { amount: 1990 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, угорь, огурец, унаги соус, кунжут", kk: "нори, күріш, ірімшік, жыланбалық, қияр, унаги тұздығы, күнжіт" }
-        },
-        { id: "singapore", illustration: "food-baked", name: { ru: "Сингапур", kk: "Сингапур" }, price: { amount: 2290 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, краб, огурец, унаги соус, кунжут", kk: "нори, күріш, ірімшік, краб, қияр, унаги тұздығы, күнжіт" }
-        } // [?]
+          desc: { ru: "нори, рис, сыр, огурцы, угорь, унаги соус, кунжут", kk: "нори, күріш, ірімшік, қияр, жыланбалық, унаги тұздығы, күнжіт" } },
+        { id: "singapur", illustration: "food-baked", name: { ru: "Сингапур", kk: "Сингапур" }, price: { amount: 2290 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, лосось, угорь, сливочный сыр, унаги соус, кунжут", kk: "нори, күріш, ірімшік, лосось, жыланбалық, кілегей ірімшігі, унаги тұздығы, күнжіт" } }
       ]
     },
     // ───────────── ЗАПЕЧЁННЫЕ РОЛЛЫ ─────────────
     {
-      id: "baked-rolls",
+      id: "zapechennye",
       illustration: "food-baked",
       name: { ru: "Запечённые роллы", kk: "Пісірілген роллдар" },
       items: [
-        { id: "baked-philadelphia-lux", illustration: "food-baked", name: { ru: "Филадельфия запечённая люкс", kk: "Пісірілген Филадельфия люкс" }, price: { amount: 2500 }, pieces: 10, hit: true,
-          desc: { ru: "нори, рис, сыр, лосось, моцарелла, унаги соус, кунжут", kk: "нори, күріш, ірімшік, лосось, моцарелла, унаги тұздығы, күнжіт" }
-        },
-        { id: "baked-philadelphia-pink", illustration: "food-baked", name: { ru: "Филадельфия запечённая с розовым соусом", kk: "Қызғылт тұздықпен пісірілген Филадельфия" }, price: { amount: 2300 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, лосось, розовый соус", kk: "нори, күріш, ірімшік, лосось, қызғылт тұздық" }
-        },
-        { id: "baked-eel", illustration: "food-baked", name: { ru: "Угорь запечённый", kk: "Пісірілген жыланбалық" }, price: { amount: 2900 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, угорь, моцарелла, унаги соус", kk: "нори, күріш, ірімшік, жыланбалық, моцарелла, унаги тұздығы" }
-        },
-        { id: "signature-roll", illustration: "food-baked", name: { ru: "Фирменный ролл", kk: "Фирмалық ролл" }, price: { amount: 2199 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, краб, тобико, моцарелла, унаги соус", kk: "нори, күріш, ірімшік, краб, тобико, моцарелла, унаги тұздығы" }
-        },
-        { id: "baked-california", illustration: "food-baked", name: { ru: "Калифорния запечённая", kk: "Пісірілген Калифорния" }, price: { amount: 2290 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, краб, тобико, моцарелла", kk: "нори, күріш, ірімшік, краб, тобико, моцарелла" }
-        },
-        { id: "dynamite", illustration: "food-baked", name: { ru: "Динамит ролл", kk: "Динамит ролл" }, price: { amount: 1990 }, pieces: 10, spicy: true,
-          desc: { ru: "нори, рис, сыр, лосось, моцарелла, острый соус", kk: "нори, күріш, ірімшік, лосось, моцарелла, ащы тұздық" }
-        }, // [?]
-        { id: "baked-ikura", illustration: "food-baked", name: { ru: "Икура запечённая", kk: "Пісірілген Икура" }, price: { amount: 1490 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, огурец, икра, розовый соус", kk: "нори, күріш, ірімшік, қияр, уылдырық, қызғылт тұздық" }
-        },
-        { id: "baked-caesar", illustration: "food-baked", name: { ru: "Цезарь запечённый", kk: "Пісірілген Цезарь" }, price: { amount: 1990 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, курица, помидор, моцарелла", kk: "нори, күріш, ірімшік, тауық еті, қызанақ, моцарелла" }
-        }, // [?]
-        { id: "baked-murakami", illustration: "food-baked", name: { ru: "Мураками запечённый", kk: "Пісірілген Мураками" }, price: { amount: 2500 }, pieces: 10,
-          desc: { ru: "нори, рис, сыр, огурец, лосось, угорь, унаги соус", kk: "нори, күріш, ірімшік, қияр, лосось, жыланбалық, унаги тұздығы" }
-        } // [?]
+        { id: "filadelfiya-zapechennaya-lyuks", illustration: "food-baked", name: { ru: "Филадельфия запечённая люкс", kk: "Пісірілген Филадельфия люкс" }, price: { amount: 2500 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, лосось, моцарелла, унаги соус, кунжут", kk: "нори, күріш, ірімшік, лосось, моцарелла, унаги тұздығы, күнжіт" } },
+        { id: "filadelfiya-zapechennaya-s-rozovym-sousom", illustration: "food-baked", name: { ru: "Филадельфия запечённая с розовым соусом", kk: "Қызғылт тұздықпен пісірілген Филадельфия" }, price: { amount: 2300 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, лосось, розовый соус", kk: "нори, күріш, ірімшік, лосось, қызғылт тұздық" } },
+        { id: "ugor-zapechennyy", illustration: "food-baked", name: { ru: "Угорь запечённый", kk: "Пісірілген жыланбалық" }, price: { amount: 2900 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, угорь, моцарелла, кунжут, унаги соус", kk: "нори, күріш, ірімшік, жыланбалық, моцарелла, күнжіт, унаги тұздығы" } },
+        { id: "firmennyy-roll", illustration: "food-baked", name: { ru: "Фирменный ролл", kk: "Фирмалық ролл" }, price: { amount: 2199 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурцы, краб, томаго, моцарелла, унаги соус, кунжут", kk: "нори, күріш, ірімшік, қияр, краб, томаго, моцарелла, унаги тұздығы, күнжіт" } },
+        { id: "kaliforniya-zapechennaya", illustration: "food-baked", name: { ru: "Калифорния запечённая", kk: "Пісірілген Калифорния" }, price: { amount: 2290 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, краб, огурец, тобико, розовый соус", kk: "нори, күріш, ірімшік, краб, қияр, тобико, қызғылт тұздық" } },
+        { id: "dinamit-roll", illustration: "food-baked", name: { ru: "Динамит ролл", kk: "Динамит ролл" }, price: { amount: 1990 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурцы, лосось, розовый соус", kk: "нори, күріш, ірімшік, қияр, лосось, қызғылт тұздық" } },
+        { id: "ikura-zapechennaya", illustration: "food-baked", name: { ru: "Икура запечённая", kk: "Пісірілген Икура" }, price: { amount: 1490 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурцы, розовый соус", kk: "нори, күріш, ірімшік, қияр, қызғылт тұздық" } },
+        { id: "tsezar-zapechennyy", illustration: "food-baked", name: { ru: "Цезарь запечённый", kk: "Пісірілген Цезарь" }, price: { amount: 1990 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, курица, помидор, розовый соус", kk: "нори, күріш, ірімшік, тауық еті, қызанақ, қызғылт тұздық" } },
+        { id: "murakami-zapechennyy", illustration: "food-baked", name: { ru: "Мураками запечённый", kk: "Пісірілген Мураками" }, price: { amount: 2500 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурцы, лосось, креветки, угорь, унаги соус, кунжут", kk: "нори, күріш, ірімшік, қияр, лосось, асшаян, жыланбалық, унаги тұздығы, күнжіт" } }
       ]
     },
-    // ───────────── СУШИ ─────────────
+    // ───────────── ХОЛОДНЫЕ РОЛЛЫ ─────────────
+    {
+      id: "holodnye",
+      illustration: "food-rolls",
+      name: { ru: "Холодные роллы", kk: "Суық роллдар" },
+      items: [
+        { id: "filadelfiya-klassicheskaya", illustration: "food-rolls", name: { ru: "Филадельфия классическая", kk: "Классикалық Филадельфия" }, price: { amount: 2200 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, лосось", kk: "нори, күріш, ірімшік, лосось" } },
+        { id: "filadelfiya-s-ogurtsom", illustration: "food-rolls", name: { ru: "Филадельфия с огурцом", kk: "Қиярлы Филадельфия" }, price: { amount: 2300 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, лосось, огурец", kk: "нори, күріш, ірімшік, лосось, қияр" } },
+        { id: "oisi", illustration: "food-rolls", name: { ru: "Оиси", kk: "Оиси" }, price: { amount: 2800 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, лосось, угорь, огурцы, зелёный лук, тобико, кунжут, розовый соус", kk: "нори, күріш, ірімшік, лосось, жыланбалық, қияр, жасыл пияз, тобико, күнжіт, қызғылт тұздық" } },
+        { id: "filadelfiya-gril", illustration: "food-rolls", name: { ru: "Филадельфия гриль", kk: "Филадельфия гриль" }, price: { amount: 2300 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, лосось, унаги соус", kk: "нори, күріш, ірімшік, лосось, унаги тұздығы" } },
+        { id: "antistress", illustration: "food-rolls", name: { ru: "Антистресс", kk: "Антистресс" }, price: { amount: 2400 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, лосось, унаги соус, жареный лук", kk: "нори, күріш, ірімшік, лосось, унаги тұздығы, қуырылған пияз" } },
+        { id: "filadelfiya-lyuks-s-ikroy", illustration: "food-rolls", name: { ru: "Филадельфия люкс с икрой", kk: "Уылдырықты Филадельфия люкс" }, price: { amount: 2500 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, лосось, икра", kk: "нори, күріш, ірімшік, лосось, уылдырық" } },
+        { id: "filadelfiya-letnyaya", illustration: "food-rolls", name: { ru: "Филадельфия летняя", kk: "Жазғы Филадельфия" }, price: { amount: 1600 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурец", kk: "нори, күріш, ірімшік, қияр" } },
+        { id: "kanada", illustration: "food-rolls", name: { ru: "Канада", kk: "Канада" }, price: { amount: 2490 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, лосось, угорь, огурец", kk: "нори, күріш, ірімшік, лосось, жыланбалық, қияр" } },
+        { id: "drakon", illustration: "food-rolls", name: { ru: "Дракон", kk: "Дракон" }, price: { amount: 2490 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, угорь, краб, огурец, унаги соус, кунжут", kk: "нори, күріш, ірімшік, жыланбалық, краб, қияр, унаги тұздығы, күнжіт" } },
+        { id: "unagi-filadelfiya", illustration: "food-rolls", name: { ru: "Унаги Филадельфия", kk: "Унаги Филадельфия" }, price: { amount: 2500 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, угорь, огурец, унаги соус, кунжут", kk: "нори, күріш, ірімшік, жыланбалық, қияр, унаги тұздығы, күнжіт" } },
+        { id: "belosnezhka", illustration: "food-rolls", name: { ru: "Белоснежка", kk: "Белоснежка" }, price: { amount: 2290 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, креветки, копчёный лосось, огурцы, фетакса, кунжут", kk: "нори, күріш, ірімшік, асшаян, ысталған лосось, қияр, фетакса, күнжіт" } },
+        { id: "kaliforniya", illustration: "food-rolls", name: { ru: "Калифорния", kk: "Калифорния" }, price: { amount: 2199 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, краб, огурцы, тобико", kk: "нори, күріш, ірімшік, краб, қияр, тобико" } },
+        { id: "lava", illustration: "food-rolls", name: { ru: "Лава", kk: "Лава" }, price: { amount: 2200 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурцы, лосось, тобико, кунжут", kk: "нори, күріш, ірімшік, қияр, лосось, тобико, күнжіт" } },
+        { id: "alyaska", illustration: "food-rolls", name: { ru: "Аляска", kk: "Аляска" }, price: { amount: 2290 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, лосось, огурец, кунжут", kk: "нори, күріш, ірімшік, лосось, қияр, күнжіт" } },
+        { id: "geysha", illustration: "food-rolls", name: { ru: "Гейша", kk: "Гейша" }, price: { amount: 1990 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, лосось, огурец, икра", kk: "нори, күріш, ірімшік, лосось, қияр, уылдырық" } },
+        { id: "almatinka", illustration: "food-rolls", name: { ru: "Алматинка", kk: "Алматинка" }, price: { amount: 2100 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурцы, лосось, томаго", kk: "нори, күріш, ірімшік, қияр, лосось, томаго" } },
+        { id: "bonito-v-struzhke-tuntsa", illustration: "food-rolls", name: { ru: "Бонито в стружке тунца", kk: "Тунец жаңқасындағы Бонито" }, price: { amount: 2199 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, жареный лосось, огурец, стружка тунца", kk: "нори, күріш, ірімшік, қуырылған лосось, қияр, тунец жаңқасы" } },
+        { id: "sancho-pancho", illustration: "food-rolls", name: { ru: "Санчо-Панчо", kk: "Санчо-Панчо" }, price: { amount: 1990 }, pieces: 10,
+          desc: { ru: "нори, рис, курица, огурец, томаго", kk: "нори, күріш, тауық еті, қияр, томаго" } },
+        { id: "chiken-roll-v-kunzhute", illustration: "food-rolls", name: { ru: "Чикен ролл в кунжуте", kk: "Күнжіттегі чикен ролл" }, price: { amount: 1890 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, курица, огурец", kk: "нори, күріш, ірімшік, тауық еті, қияр" } },
+        { id: "busido", illustration: "food-rolls", name: { ru: "Бусидо", kk: "Бусидо" }, price: { amount: 1890 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурец, сырный соус, кунжут", kk: "нори, күріш, ірімшік, қияр, ірімшік тұздығы, күнжіт" } },
+        { id: "tomato", illustration: "food-rolls", name: { ru: "Томато", kk: "Томато" }, price: { amount: 1100 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, помидор", kk: "нори, күріш, ірімшік, қызанақ" } }
+      ]
+    },
+    // ───────────── МИНИ РОЛЛЫ ─────────────
+    {
+      id: "mini",
+      illustration: "food-rolls",
+      name: { ru: "Мини роллы", kk: "Мини роллдар" },
+      items: [
+        { id: "roll-s-zharenym-lososem", illustration: "food-rolls", name: { ru: "Ролл с жареным лососем", kk: "Қуырылған лосось қосылған ролл" }, price: { amount: 1890 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурцы, жареный лосось, унаги соус, кунжут", kk: "нори, күріш, ірімшік, қияр, қуырылған лосось, унаги тұздығы, күнжіт" } },
+        { id: "kappa-maki", illustration: "food-rolls", name: { ru: "Каппа маки", kk: "Каппа маки" }, price: { amount: 1100 }, pieces: 10,
+          desc: { ru: "нори, рис, огурцы", kk: "нори, күріш, қияр" } },
+        { id: "ikura-lotos", illustration: "food-rolls", name: { ru: "Икура лотос", kk: "Икура лотос" }, price: { amount: 1000 }, pieces: 10,
+          desc: { ru: "нори, рис, сыр, огурец, икра", kk: "нори, күріш, ірімшік, қияр, уылдырық" } },
+        { id: "khosomaki", illustration: "food-rolls", name: { ru: "Хосомаки", kk: "Хосомаки" }, price: { amount: 1590 }, pieces: 10,
+          desc: { ru: "нори, рис, лосось, огурцы", kk: "нори, күріш, лосось, қияр" } },
+        { id: "syake-maki", illustration: "food-rolls", name: { ru: "Сяке маки", kk: "Сяке маки" }, price: { amount: 1490 }, pieces: 10,
+          desc: { ru: "нори, рис, лосось", kk: "нори, күріш, лосось" } }
+      ]
+    },
+    // ───────────── СУШИ И ГУНКАНЫ ─────────────
     {
       id: "sushi",
       illustration: "food-sushi",
-      name: { ru: "Суши", kk: "Суши" },
+      name: { ru: "Суши и гунканы", kk: "Суши және гункандар" },
       items: [
-        { id: "nigiri-salmon", illustration: "food-sushi", name: { ru: "Нигири с лососем", kk: "Лосось қосылған нигири" }, price: { amount: 1000 }, pieces: 1,
-          desc: { ru: "рис, лосось", kk: "күріш, лосось" }
-        },
-        { id: "nigiri-eel", illustration: "food-sushi", name: { ru: "Нигири с угрём", kk: "Жыланбалық қосылған нигири" }, price: { amount: 1000 }, pieces: 1,
-          desc: { ru: "рис, угорь", kk: "күріш, жыланбалық" }
-        },
-        { id: "nigiri-shrimp", illustration: "food-sushi", name: { ru: "Нигири с креветкой", kk: "Асшаян қосылған нигири" }, price: { amount: 1000 }, pieces: 1,
-          desc: { ru: "рис, креветка", kk: "күріш, асшаян" }
-        },
-        { id: "gunkan-salmon", illustration: "food-sushi", name: { ru: "Гункан с лососем", kk: "Лосось қосылған гункан" }, price: { amount: 1000 }, pieces: 1,
-          desc: { ru: "нори, рис, лосось", kk: "нори, күріш, лосось" }
-        },
-        { id: "gunkan-eel", illustration: "food-sushi", name: { ru: "Гункан с угрём", kk: "Жыланбалық қосылған гункан" }, price: { amount: 1000 }, pieces: 1,
-          desc: { ru: "нори, рис, угорь", kk: "нори, күріш, жыланбалық" }
-        },
-        { id: "gunkan-shrimp", illustration: "food-sushi", name: { ru: "Гункан с креветкой", kk: "Асшаян қосылған гункан" }, price: { amount: 1000 }, pieces: 1,
-          desc: { ru: "нори, рис, креветки", kk: "нори, күріш, асшаян" }
-        },
-        { id: "gunkan-tobiko", illustration: "food-sushi", name: { ru: "Гункан с тобико", kk: "Тобико қосылған гункан" }, price: { amount: 1000 }, pieces: 1,
-          desc: { ru: "нори, рис, тобико", kk: "нори, күріш, тобико" }
-        },
-        { id: "gunkan-chuka", illustration: "food-sushi", name: { ru: "Гункан с чукой", kk: "Чука қосылған гункан" }, price: { amount: 1000 }, pieces: 1,
-          desc: { ru: "нори, рис, чука", kk: "нори, күріш, чука" }
-        },
-        { id: "baked-gunkan-salmon", illustration: "food-sushi", name: { ru: "Гункан запечённый с лососем", kk: "Лосось қосылған пісірілген гункан" }, price: { amount: 1000 }, pieces: 1,
-          desc: { ru: "нори, рис, розовый соус, лосось", kk: "нори, күріш, қызғылт тұздық, лосось" }
-        },
-        { id: "baked-gunkan-eel", illustration: "food-sushi", name: { ru: "Гункан запечённый с угрём", kk: "Жыланбалық қосылған пісірілген гункан" }, price: { amount: 1000 }, pieces: 1,
-          desc: { ru: "нори, рис, розовый соус, угорь", kk: "нори, күріш, қызғылт тұздық, жыланбалық" }
-        },
-        { id: "baked-gunkan-shrimp", illustration: "food-sushi", name: { ru: "Гункан запечённый с креветкой", kk: "Асшаян қосылған пісірілген гункан" }, price: { amount: 1000 }, pieces: 1,
-          desc: { ru: "нори, рис, розовый соус, креветки", kk: "нори, күріш, қызғылт тұздық, асшаян" }
-        },
-        { id: "baked-gunkan-crab", illustration: "food-sushi", name: { ru: "Гункан запечённый с крабом", kk: "Краб қосылған пісірілген гункан" }, price: { amount: 1000 }, pieces: 1,
-          desc: { ru: "нори, рис, розовый соус, краб", kk: "нори, күріш, қызғылт тұздық, краб" }
-        }
+        { id: "nigiri-s-lososem", illustration: "food-sushi", name: { ru: "Нигири с лососем", kk: "Лосось қосылған нигири" }, price: { amount: 1000 }, pieces: 1,
+          desc: { ru: "рис, лосось", kk: "күріш, лосось" } },
+        { id: "nigiri-s-ugrem", illustration: "food-sushi", name: { ru: "Нигири с угрём", kk: "Жыланбалық қосылған нигири" }, price: { amount: 1000 }, pieces: 1,
+          desc: { ru: "рис, угорь", kk: "күріш, жыланбалық" } },
+        { id: "nigiri-s-krevetkoy", illustration: "food-sushi", name: { ru: "Нигири с креветкой", kk: "Асшаян қосылған нигири" }, price: { amount: 1000 }, pieces: 1,
+          desc: { ru: "рис, креветки", kk: "күріш, асшаян" } },
+        { id: "gunkan-s-lososem", illustration: "food-sushi", name: { ru: "Гункан с лососем", kk: "Лосось қосылған гункан" }, price: { amount: 1000 }, pieces: 1,
+          desc: { ru: "нори, рис, лосось", kk: "нори, күріш, лосось" } },
+        { id: "gunkan-s-ugrem", illustration: "food-sushi", name: { ru: "Гункан с угрём", kk: "Жыланбалық қосылған гункан" }, price: { amount: 1000 }, pieces: 1,
+          desc: { ru: "нори, рис, угорь", kk: "нори, күріш, жыланбалық" } },
+        { id: "gunkan-s-krevetkoy", illustration: "food-sushi", name: { ru: "Гункан с креветкой", kk: "Асшаян қосылған гункан" }, price: { amount: 1000 }, pieces: 1,
+          desc: { ru: "нори, рис, креветки", kk: "нори, күріш, асшаян" } },
+        { id: "gunkan-s-tobiko", illustration: "food-sushi", name: { ru: "Гункан с тобико", kk: "Тобико қосылған гункан" }, price: { amount: 1000 }, pieces: 1,
+          desc: { ru: "нори, рис, тобико", kk: "нори, күріш, тобико" } },
+        { id: "gunkan-s-chukoy", illustration: "food-sushi", name: { ru: "Гункан с чукой", kk: "Чука қосылған гункан" }, price: { amount: 1000 }, pieces: 1,
+          desc: { ru: "нори, рис, чука", kk: "нори, күріш, чука" } },
+        { id: "gunkan-zapechennyy-s-lososem", illustration: "food-sushi", name: { ru: "Гункан запечённый с лососем", kk: "Лосось қосылған пісірілген гункан" }, price: { amount: 1000 }, pieces: 1,
+          desc: { ru: "нори, рис, розовый соус, лосось", kk: "нори, күріш, қызғылт тұздық, лосось" } },
+        { id: "gunkan-zapechennyy-s-ugrem", illustration: "food-sushi", name: { ru: "Гункан запечённый с угрём", kk: "Жыланбалық қосылған пісірілген гункан" }, price: { amount: 1000 }, pieces: 1,
+          desc: { ru: "нори, рис, розовый соус, угорь", kk: "нори, күріш, қызғылт тұздық, жыланбалық" } },
+        { id: "gunkan-zapechennyy-s-krevetkoy", illustration: "food-sushi", name: { ru: "Гункан запечённый с креветкой", kk: "Асшаян қосылған пісірілген гункан" }, price: { amount: 1000 }, pieces: 1,
+          desc: { ru: "нори, рис, розовый соус, креветки", kk: "нори, күріш, қызғылт тұздық, асшаян" } },
+        { id: "gunkan-zapechennyy-s-krabom", illustration: "food-sushi", name: { ru: "Гункан запечённый с крабом", kk: "Краб қосылған пісірілген гункан" }, price: { amount: 1000 }, pieces: 1,
+          desc: { ru: "нори, рис, розовый соус, краб", kk: "нори, күріш, қызғылт тұздық, краб" } }
       ]
     },
     // ───────────── ПИЦЦА ─────────────
@@ -1299,108 +1502,162 @@ const priceData = {
       illustration: "food-pizza",
       name: { ru: "Пицца", kk: "Пицца" },
       items: [
-        { id: "margarita", illustration: "food-pizza", name: { ru: "Маргарита", kk: "Маргарита" }, price: { amount: 1690, from: true }, veg: true,
-          desc: { ru: "фирменный соус, сыр, помидоры", kk: "фирмалық тұздық, ірімшік, қызанақ" }
-        },
-        { id: "pepperoni", illustration: "food-pizza", name: { ru: "Пепперони", kk: "Пепперони" }, price: { amount: 1990, from: true }, hit: true,
-          desc: { ru: "фирменный соус, сыр, колбаса", kk: "фирмалық тұздық, ірімшік, шұжық" }
-        },
-        { id: "cheese", illustration: "food-pizza", name: { ru: "Сырная", kk: "Ірімшікті" }, price: { amount: 1990, from: true }, veg: true,
-          desc: { ru: "фирменный соус, сыр", kk: "фирмалық тұздық, ірімшік" }
-        },
-        { id: "chicken-pizza", illustration: "food-pizza", name: { ru: "Куриная", kk: "Тауық етімен" }, price: { amount: 1990, from: true },
-          desc: { ru: "фирменный соус, сыр, курица", kk: "фирмалық тұздық, ірімшік, тауық еті" }
-        },
-        { id: "four-seasons", illustration: "food-pizza", name: { ru: "4 сезона", kk: "4 маусым" }, price: { amount: 2190, from: true },
-          desc: { ru: "фирменный соус, сыр, курица, шампиньоны, колбаса, фри", kk: "фирмалық тұздық, ірімшік, тауық еті, шампиньон, шұжық, фри картобы" }
-        }, // [?]
-        { id: "bbq", illustration: "food-pizza", name: { ru: "Барбекю", kk: "Барбекю" }, price: { amount: 2190, from: true },
-          desc: { ru: "фирменный соус, сыр, курица, шампиньоны, соус BBQ", kk: "фирмалық тұздық, ірімшік, тауық еті, шампиньон, BBQ тұздығы" }
-        }, // [?]
-        { id: "chicken-mushroom", illustration: "food-pizza", name: { ru: "Курица с грибами", kk: "Тауық еті мен саңырауқұлақ" }, price: { amount: 2190, from: true },
-          desc: { ru: "фирменный соус, сыр, курица, шампиньоны", kk: "фирмалық тұздық, ірімшік, тауық еті, шампиньон" }
-        },
-        { id: "mushroom", illustration: "food-pizza", name: { ru: "Грибная", kk: "Саңырауқұлақты" }, price: { amount: 2190, from: true }, veg: true,
-          desc: { ru: "фирменный соус, сыр, шампиньоны", kk: "фирмалық тұздық, ірімшік, шампиньон" }
-        },
-        { id: "italian", illustration: "food-pizza", name: { ru: "Итальянская", kk: "Итальяндық" }, price: { amount: 2190, from: true },
-          desc: { ru: "фирменный соус, сыр, колбаса, помидоры", kk: "фирмалық тұздық, ірімшік, шұжық, қызанақ" }
-        }, // [?]
-        { id: "pepperoni-tomato", illustration: "food-pizza", name: { ru: "Пепперони с помидорами", kk: "Қызанақты пепперони" }, price: { amount: 2190, from: true },
-          desc: { ru: "фирменный соус, сыр, колбаса, помидоры", kk: "фирмалық тұздық, ірімшік, шұжық, қызанақ" }
-        },
-        { id: "rising-sun", illustration: "food-pizza", name: { ru: "Восходящее солнце", kk: "Күн шығысы" }, price: { amount: 2190, from: true },
-          desc: { ru: "фирменный соус, сыр, курица, колбаса, перец", kk: "фирмалық тұздық, ірімшік, тауық еті, шұжық, бұрыш" }
-        }, // [?]
-        { id: "mysato", illustration: "food-pizza", name: { ru: "Mysato", kk: "Mysato" }, price: { amount: 2290, from: true },
-          desc: { ru: "фирменный соус, сыр, курица, грибы, колбаса, болгарский перец", kk: "фирмалық тұздық, ірімшік, тауық еті, саңырауқұлақ, шұжық, болгар бұрышы" }
-        },
-        { id: "bolognese", illustration: "food-pizza", name: { ru: "Болоньезе", kk: "Болоньезе" }, price: { amount: 2290, from: true },
-          desc: { ru: "фирменный соус, сыр, фарш", kk: "фирмалық тұздық, ірімшік, тартылған ет" }
-        }, // [?]
-        { id: "philadelphia-pizza", illustration: "food-pizza", name: { ru: "Филадельфия", kk: "Филадельфия" }, price: { amount: 2290, from: true },
-          desc: { ru: "фирменный соус, сыр, лосось", kk: "фирмалық тұздық, ірімшік, лосось" }
-        }, // [?]
-        { id: "seafood", illustration: "food-pizza", name: { ru: "Морской коктейль", kk: "Теңіз коктейлі" }, price: { amount: 2290, from: true },
-          desc: { ru: "фирменный соус, сыр, морепродукты", kk: "фирмалық тұздық, ірімшік, теңіз өнімдері" }
-        }, // [?]
-        { id: "chicken-mushroom-cheese", illustration: "food-pizza", name: { ru: "Курица с грибами в сырном соусе", kk: "Ірімшік тұздығындағы тауық еті мен саңырауқұлақ" }, price: { amount: 2290, from: true },
-          desc: { ru: "сырный соус, сыр, курица, шампиньоны", kk: "ірімшік тұздығы, ірімшік, тауық еті, шампиньон" }
-        },
-        { id: "american", illustration: "food-pizza", name: { ru: "Американская", kk: "Американдық" }, price: { amount: 2290, from: true },
-          desc: { ru: "фирменный соус, сыр, курица, колбаса, перец, лук", kk: "фирмалық тұздық, ірімшік, тауық еті, шұжық, бұрыш, пияз" }
-        }, // [?]
-        { id: "mexican", illustration: "food-pizza", name: { ru: "Мексиканская", kk: "Мексикалық" }, price: { amount: 2290, from: true }, spicy: true,
-          desc: { ru: "фирменный соус, сыр, колбаса, перец, халапеньо", kk: "фирмалық тұздық, ірімшік, шұжық, бұрыш, халапеньо" }
-        }, // [?]
-        { id: "hunter", illustration: "food-pizza", name: { ru: "Охотничья", kk: "Аңшылар" }, price: { amount: 2290, from: true },
-          desc: { ru: "фирменный соус, сыр, охотничьи колбаски, шампиньоны", kk: "фирмалық тұздық, ірімшік, аңшы шұжықтары, шампиньон" }
-        } // [?]
+        { id: "pizza-margarita", illustration: "food-pizza", name: { ru: "Маргарита", kk: "Маргарита" }, price: { amount: 1990 },
+          desc: { ru: "фирменный соус, сыр, помидоры", kk: "фирмалық тұздық, ірімшік, қызанақ" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 1990 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2190 }
+          ] },
+        { id: "pizza-pepperoni", illustration: "food-pizza", name: { ru: "Пепперони", kk: "Пепперони" }, price: { amount: 2190 },
+          desc: { ru: "фирменный соус, сыр, колбаса", kk: "фирмалық тұздық, ірімшік, шұжық" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2190 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2390 }
+          ] },
+        { id: "pizza-4-sezona", illustration: "food-pizza", name: { ru: "4 сезона", kk: "4 маусым" }, price: { amount: 2390 },
+          desc: { ru: "фирменный соус, сыр, курица, шампиньоны, колбаса, фарш", kk: "фирмалық тұздық, ірімшік, тауық еті, шампиньон, шұжық, тартылған ет" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2390 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2590 }
+          ] },
+        { id: "pizza-barbekyu", illustration: "food-pizza", name: { ru: "Барбекю", kk: "Барбекю" }, price: { amount: 2390 },
+          desc: { ru: "фирменный соус, сыр, курица, шампиньоны, фарш, перец светофор, соус BBQ", kk: "фирмалық тұздық, ірімшік, тауық еті, шампиньон, тартылған ет, үш түсті тәтті бұрыш, BBQ тұздығы" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2390 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2590 }
+          ] },
+        { id: "pizza-mysushi", illustration: "food-pizza", name: { ru: "MySushi", kk: "MySushi" }, price: { amount: 2390 },
+          desc: { ru: "фирменный соус, сыр, курица, грибы, колбаса, перец, болоньезе", kk: "фирмалық тұздық, ірімшік, тауық еті, саңырауқұлақ, шұжық, бұрыш, болоньезе" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2390 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2590 }
+          ] },
+        { id: "pizza-boloneze", illustration: "food-pizza", name: { ru: "Болоньезе", kk: "Болоньезе" }, price: { amount: 2390 },
+          desc: { ru: "фирменный соус, сыр, фарш", kk: "фирмалық тұздық, ірімшік, тартылған ет" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2390 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2590 }
+          ] },
+        { id: "pizza-filadelfiya", illustration: "food-pizza", name: { ru: "Филадельфия", kk: "Филадельфия" }, price: { amount: 2590 },
+          desc: { ru: "фирменный соус, лосось, чука салат, сыр креметта", kk: "фирмалық тұздық, лосось, чука салаты, креметта ірімшігі" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2590 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2790 }
+          ] },
+        { id: "pizza-morskoy-kokteyl", illustration: "food-pizza", name: { ru: "Морской коктейль", kk: "Теңіз коктейлі" }, price: { amount: 2590 },
+          desc: { ru: "фирменный соус, сыр, креветки, лосось", kk: "фирмалық тұздық, ірімшік, асшаян, лосось" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2590 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2790 }
+          ] },
+        { id: "pizza-syrnaya", illustration: "food-pizza", name: { ru: "Сырная", kk: "Ірімшікті" }, price: { amount: 1790 },
+          desc: { ru: "фирменный соус, сыр", kk: "фирмалық тұздық, ірімшік" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 1790 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 1990 }
+          ] },
+        { id: "pizza-kurinaya", illustration: "food-pizza", name: { ru: "Куриная", kk: "Тауық етімен" }, price: { amount: 2190 },
+          desc: { ru: "фирменный соус, сыр, курица", kk: "фирмалық тұздық, ірімшік, тауық еті" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2190 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2390 }
+          ] },
+        { id: "pizza-kuritsa-s-gribami", illustration: "food-pizza", name: { ru: "Курица с грибами в сырном соусе", kk: "Ірімшік тұздығындағы тауық еті мен саңырауқұлақ" }, price: { amount: 2390 },
+          desc: { ru: "фирменный соус, сыр, курица, шампиньоны, сырный соус", kk: "фирмалық тұздық, ірімшік, тауық еті, шампиньон, ірімшік тұздығы" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2390 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2590 }
+          ] },
+        { id: "pizza-gribnaya", illustration: "food-pizza", name: { ru: "Грибная", kk: "Саңырауқұлақты" }, price: { amount: 2190 },
+          desc: { ru: "фирменный соус, сыр, шампиньоны", kk: "фирмалық тұздық, ірімшік, шампиньон" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2190 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2390 }
+          ] },
+        { id: "pizza-italyanskaya", illustration: "food-pizza", name: { ru: "Итальянская", kk: "Итальяндық" }, price: { amount: 2390 },
+          desc: { ru: "фирменный соус, сыр, колбаса, шампиньоны", kk: "фирмалық тұздық, ірімшік, шұжық, шампиньон" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2390 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2590 }
+          ] },
+        { id: "pizza-amerikanskaya", illustration: "food-pizza", name: { ru: "Американская", kk: "Американдық" }, price: { amount: 2490 },
+          desc: { ru: "фирменный соус, сыр, курица, шампиньоны, фарш, перец болгарский, колбаса", kk: "фирмалық тұздық, ірімшік, тауық еті, шампиньон, тартылған ет, болгар бұрышы, шұжық" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2490 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2790 }
+          ] },
+        { id: "pizza-meksikanskaya", illustration: "food-pizza", name: { ru: "Мексиканская", kk: "Мексикалық" }, price: { amount: 2390 },
+          desc: { ru: "фирменный соус, сыр, шампиньоны, фарш, халапеньо", kk: "фирмалық тұздық, ірімшік, шампиньон, тартылған ет, халапеньо" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2390 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2590 }
+          ] },
+        { id: "pizza-okhotnichya", illustration: "food-pizza", name: { ru: "Охотничья", kk: "Аңшылар" }, price: { amount: 2390 },
+          desc: { ru: "фирменный соус, сосиски охотничьи, шампиньоны", kk: "фирмалық тұздық, аңшы шұжықтары, шампиньон" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2390 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2590 }
+          ] },
+        { id: "pizza-pepperoni-s-pomidorami", illustration: "food-pizza", name: { ru: "Пепперони с помидорами", kk: "Қызанақты Пепперони" }, price: { amount: 2290 },
+          desc: { ru: "фирменный соус, сыр, помидоры, колбаса", kk: "фирмалық тұздық, ірімшік, қызанақ, шұжық" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2290 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2490 }
+          ] },
+        { id: "pizza-voskhodyashchee-solntse", illustration: "food-pizza", name: { ru: "Восходящее солнце", kk: "Шығып келе жатқан күн" }, price: { amount: 2390 },
+          desc: { ru: "фирменный соус, сыр, курица, шампиньоны, болгарский перец", kk: "фирмалық тұздық, ірімшік, тауық еті, шампиньон, болгар бұрышы" },
+          variants: [
+            { id: "30", name: { ru: "30 см", kk: "30 см" }, amount: 2390 },
+            { id: "33", name: { ru: "33 см", kk: "33 см" }, amount: 2590 }
+          ] },
+        { id: "firmennyy-doner", illustration: "food-doner", name: { ru: "Фирменный донер", kk: "Фирмалық донер" }, price: { amount: 2190, from: true },
+          desc: { ru: "фирменный соус, сыр, курица, шампиньоны, болгарский перец", kk: "фирмалық тұздық, ірімшік, тауық еті, шампиньон, болгар бұрышы" } }
       ]
     },
-    // ───────────── КУРИЦА И ЗАКУСКИ ─────────────
+    // ───────────── САЛАТЫ И ЗАКУСКИ ─────────────
     {
-      id: "chicken",
+      id: "zakuski",
       illustration: "food-chicken",
-      name: { ru: "Курица и закуски", kk: "Тауық еті және тіскебасарлар" },
+      name: { ru: "Салаты и закуски", kk: "Салаттар мен тағамдар" },
       items: [
-        { id: "wings", illustration: "food-chicken", name: { ru: "Куриные крылышки (средняя острота)", kk: "Тауық қанаттары (орташа ащы)" }, price: { amount: 1690 }, hit: true, spicy: true,
+        { id: "chuka-salat", illustration: "food-sushi", name: { ru: "Чука салат", kk: "Чука салаты" }, price: { amount: 1800 },
+          desc: { ru: "чука, ореховый соус, лимон, кунжут, листья салата", kk: "чука, жаңғақ тұздығы, лимон, күнжіт, салат жапырақтары" } },
+        { id: "fri", illustration: "food-fries", name: { ru: "Фри", kk: "Фри" }, price: { amount: 790 },
           variants: [
-            { id: "8", name: { ru: "8 шт.", kk: "8 дана" }, amount: 1690 },
+            { id: "200", name: { ru: "200 г", kk: "200 г" }, amount: 790 },
+            { id: "300", name: { ru: "300 г", kk: "300 г" }, amount: 990 }
+          ] },
+        { id: "fri-shariki", illustration: "food-fries", name: { ru: "Фри-шарики", kk: "Фри-шариктер" }, price: { amount: 1000 }, grams: 200 },
+        { id: "korn-dogi", illustration: "food-nuggets", name: { ru: "Корн-доги", kk: "Корн-догтар" }, price: { amount: 990 }, pieces: 4 },
+        { id: "naggetsy", illustration: "food-nuggets", name: { ru: "Наггетсы", kk: "Наггетстер" }, price: { amount: 990 }, pieces: 6 },
+        { id: "syrnye-palochki", illustration: "food-chicken", name: { ru: "Сырные палочки", kk: "Ірімшік таяқшалары" }, price: { amount: 990 }, pieces: 4 },
+        { id: "kurinye-krylyshki", illustration: "food-chicken", name: { ru: "Куриные крылышки", kk: "Тауық қанаттары" }, price: { amount: 2090 },
+          desc: { ru: "средняя острота", kk: "орташа ащы" },
+          variants: [
+            { id: "8", name: { ru: "8 шт.", kk: "8 дана" }, amount: 2090 },
+            { id: "12", name: { ru: "12 шт.", kk: "12 дана" }, amount: 2790 },
             { id: "16", name: { ru: "16 шт.", kk: "16 дана" }, amount: 3490 },
             { id: "20", name: { ru: "20 шт.", kk: "20 дана" }, amount: 3990 },
             { id: "30", name: { ru: "30 шт.", kk: "30 дана" }, amount: 5690 },
             { id: "40", name: { ru: "40 шт.", kk: "40 дана" }, amount: 7190 },
             { id: "50", name: { ru: "50 шт.", kk: "50 дана" }, amount: 8790 }
-          ]
-        },
-        { id: "doner", illustration: "food-doner", name: { ru: "Фирменный донер", kk: "Фирмалық донер" }, price: { amount: 1800, from: true },
-          desc: { ru: "курица, овощи, соус", kk: "тауық еті, көкөністер, тұздық" }
-        }, // [?]
-        { id: "burger-set", illustration: "food-burger", name: { ru: "Бургер с курицей + фри + Coca-Cola 0,5 л", kk: "Тауық етінен бургер + фри + Coca-Cola 0,5 л" }, price: { amount: 2200 } },
-        { id: "nuggets", illustration: "food-nuggets", name: { ru: "Наггетсы", kk: "Наггетстер" }, price: { amount: 790 }, pieces: 6 },
-        { id: "corn-dogs", illustration: "food-nuggets", name: { ru: "Корн-доги", kk: "Корн-догтар" }, price: { amount: 990 }, pieces: 4 },
-        { id: "cheese-sticks", illustration: "food-chicken", name: { ru: "Сырные палочки", kk: "Ірімшік таяқшалары" }, price: { amount: 990 }, pieces: 4 }, // [?]
-        { id: "fries", illustration: "food-fries", name: { ru: "Картофель фри", kk: "Фри картобы" }, price: { amount: 790 }, veg: true,
-          variants: [
-            { id: "200", name: { ru: "200 г", kk: "200 г" }, amount: 790 },
-            { id: "300", name: { ru: "300 г", kk: "300 г" }, amount: 990 }
-          ]
-        },
-        { id: "fries-balls", illustration: "food-fries", name: { ru: "Фри-шарики", kk: "Фри-шариктер" }, price: { amount: 1000 }, grams: 200, veg: true },
-        { id: "chuka-salad", illustration: "food-sushi", name: { ru: "Чука салат", kk: "Чука салаты" }, price: { amount: 1800 }, veg: true,
-          desc: { ru: "водоросли чука, ореховый соус, кунжут", kk: "чука балдыры, жаңғақ тұздығы, күнжіт" }
-        }
+          ] }
       ]
     },
-    // ───────────── НАПИТКИ ─────────────
+    // ───────────── СОУСЫ ─────────────
     {
-      id: "drinks",
-      illustration: "food-drink",
-      name: { ru: "Напитки", kk: "Сусындар" },
+      id: "sousy",
+      illustration: "food-sushi",
+      name: { ru: "Соусы", kk: "Тұздықтар" },
       items: [
-        { id: "cola-1l", illustration: "food-drink", name: { ru: "Coca-Cola", kk: "Coca-Cola" }, price: { amount: 990 }, ml: 1000 },
-        { id: "cola-05l", illustration: "food-drink", name: { ru: "Coca-Cola", kk: "Coca-Cola" }, price: { amount: 590 }, ml: 500 }
+        { id: "sous-syrnyy", illustration: "food-sushi", name: { ru: "Сырный соус", kk: "Ірімшік тұздығы" }, price: { amount: 200 } },
+        { id: "sous-barbekyu", illustration: "food-sushi", name: { ru: "Барбекю соус", kk: "Барбекю тұздығы" }, price: { amount: 200 } },
+        { id: "sous-tar-tar", illustration: "food-sushi", name: { ru: "Тар-тар соус", kk: "Тар-тар тұздығы" }, price: { amount: 200 } },
+        { id: "sous-ketchup", illustration: "food-sushi", name: { ru: "Кетчуп соус", kk: "Кетчуп" }, price: { amount: 200 } },
+        { id: "sous-soevyy", illustration: "food-sushi", name: { ru: "Соевый соус", kk: "Соя тұздығы" }, price: { amount: 200 } },
+        { id: "sous-vasabi", illustration: "food-sushi", name: { ru: "Васаби", kk: "Васаби" }, price: { amount: 200 } },
+        { id: "sous-imbir", illustration: "food-sushi", name: { ru: "Имбирь", kk: "Зімбір" }, price: { amount: 200 } },
+        { id: "sous-khalapeno", illustration: "food-sushi", name: { ru: "Халапеньо", kk: "Халапеньо" }, price: { amount: 200 } }
       ]
     }
   ]
@@ -1423,26 +1680,22 @@ const ILLUSTRATIONS = {
     '<svg class="il" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><path class="fa2" d="M4 60a56 56 0 1 0 112 0a56 56 0 1 0 -112 0"/><text class="mt" x="60" y="78" text-anchor="middle" font-size="50">MS</text></svg>',
   'food-combo':
     '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hl" d="M65.8 36.3L68.8 36Q70.3 35.8 70.4 37.3L73.2 64.2Q73.4 65.7 71.9 65.8L68.9 66.1Q67.4 66.3 67.3 64.8L64.5 37.9Q64.3 36.5 65.8 36.3Z" pathLength="1"/><path class="lc c-hl" d="M77.9 30L80.8 30.3Q82.3 30.5 82.2 32L79.3 58.8Q79.2 60.3 77.7 60.2L74.7 59.9Q73.2 59.7 73.4 58.2L76.2 31.4Q76.4 29.9 77.9 30Z" pathLength="1"/><path class="lc c-hl" d="M78 38.3L81 38Q82.5 37.8 82.6 39.3L85.5 66.2Q85.6 67.7 84.1 67.8L81.1 68.1Q79.6 68.3 79.5 66.8L76.7 39.9Q76.5 38.4 78 38.3Z" pathLength="1"/><path class="lc c-be" d="M98 46H114L112 64H100Z" pathLength="1"/><path class="lc c-be" d="M112.1 26.2L112.1 26.2Q113.6 26.6 113.3 28.1L111.1 38.7Q110.7 40.2 109.2 39.9L109.2 39.9Q107.6 39.6 107.9 38L110.2 27.5Q110.5 25.9 112.1 26.2Z" pathLength="1"/><path class="lc c-hl" d="M64 60H122L118 118H68Z" pathLength="1"/><path class="lc" opacity="0.6" d="M82 60C82 50 90 46 94 52M100 60C100 50 108 46 112 52" pathLength="1"/><path class="lc c-be" d="M82 88a11 11 0 1 0 22 0a11 11 0 1 0 -22 0" pathLength="1"/><path class="fw" d="M87 88a6 6 0 1 0 12 0a6 6 0 1 0 -12 0"/><path class="lc c-ik" d="M125 104a13 13 0 1 0 26 0a13 13 0 1 0 -26 0" pathLength="1"/><path class="fw" d="M127.1 104a10.9 10.9 0 1 0 21.8 0a10.9 10.9 0 1 0 -21.8 0"/><path class="c-mt" fill-opacity="0.8" d="M130.1 100.1a0.8 0.8 0 1 0 1.6 0a0.8 0.8 0 1 0 -1.6 0"/><path class="c-mt" fill-opacity="0.8" d="M143.7 98.2a0.8 0.8 0 1 0 1.6 0a0.8 0.8 0 1 0 -1.6 0"/><path class="c-mt" fill-opacity="0.8" d="M132.7 111.2a0.8 0.8 0 1 0 1.6 0a0.8 0.8 0 1 0 -1.6 0"/><path class="c-mt" fill-opacity="0.8" d="M145 108.6a0.8 0.8 0 1 0 1.6 0a0.8 0.8 0 1 0 -1.6 0"/><path class="c-mt" fill-opacity="0.8" d="M137.9 95.2a0.8 0.8 0 1 0 1.6 0a0.8 0.8 0 1 0 -1.6 0"/><path class="c-mt" fill-opacity="0.8" d="M128.6 106a0.8 0.8 0 1 0 1.6 0a0.8 0.8 0 1 0 -1.6 0"/><path class="lc c-hm" d="M132.3 103a4.2 4.2 0 1 0 8.3 0a4.2 4.2 0 1 0 -8.3 0" pathLength="1"/><path class="lh" d="M134.1 101.7L138.5 101.4" pathLength="1"/><path class="lc c-aq" d="M139.4 106.9a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0 -4.4 0" pathLength="1"/><path class="c-hl" d="M133.6 108.2a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0 -3.6 0"/><path class="c-go" d="M56 38Q56.7 41.3 60 42Q56.7 42.7 56 46Q55.3 42.7 52 42Q55.3 41.3 56 38Z"/><path class="c-go" d="M148 37Q148.5 39.5 151 40Q148.5 40.5 148 43Q147.5 40.5 145 40Q147.5 39.5 148 37Z"/></svg>',
-  'food-rolls':
-    '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hl" d="M80.6 52.1L150.5 20.9Q152.1 20.2 152.8 21.8L152.8 21.8Q153.5 23.4 151.9 24L82 55.2Q80.4 55.9 79.7 54.3L79.7 54.3Q79 52.8 80.6 52.1Z" pathLength="1"/><path class="lc c-hl" d="M83.4 58.5L153.4 27.3Q154.9 26.6 155.6 28.2L155.6 28.2Q156.3 29.8 154.8 30.4L84.8 61.6Q83.2 62.3 82.6 60.7L82.6 60.7Q81.9 59.2 83.4 58.5Z" pathLength="1"/><path class="lc c-ik" d="M55 74a17 17 0 1 0 34 0a17 17 0 1 0 -34 0" pathLength="1"/><path class="fw" d="M57.7 74a14.3 14.3 0 1 0 28.6 0a14.3 14.3 0 1 0 -28.6 0"/><path class="c-mt" fill-opacity="0.8" d="M61.6 68.9a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-mt" fill-opacity="0.8" d="M79.5 66.4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-mt" fill-opacity="0.8" d="M65 83.4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-mt" fill-opacity="0.8" d="M81.2 80a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-mt" fill-opacity="0.8" d="M71.8 62.4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-mt" fill-opacity="0.8" d="M59.8 76.6a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="lc c-hm" d="M64.5 72.6a5.4 5.4 0 1 0 10.9 0a5.4 5.4 0 1 0 -10.9 0" pathLength="1"/><path class="lh" d="M66.9 70.9L72.7 70.6" pathLength="1"/><path class="lc c-aq" d="M73.9 77.7a2.9 2.9 0 1 0 5.8 0a2.9 2.9 0 1 0 -5.8 0" pathLength="1"/><path class="c-hl" d="M66.2 79.4a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0"/><path class="lc c-ik" d="M85 82a25 25 0 1 0 50 0a25 25 0 1 0 -50 0" pathLength="1"/><path class="fw" d="M89 82a21 21 0 1 0 42 0a21 21 0 1 0 -42 0"/><path class="c-mt" fill-opacity="0.8" d="M94.8 74.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-mt" fill-opacity="0.8" d="M121 70.8a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-mt" fill-opacity="0.8" d="M99.8 95.8a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-mt" fill-opacity="0.8" d="M123.5 90.8a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-mt" fill-opacity="0.8" d="M109.8 65a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-mt" fill-opacity="0.8" d="M92 85.8a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="lc c-hm" d="M99 80a8 8 0 1 0 16 0a8 8 0 1 0 -16 0" pathLength="1"/><path class="lh" d="M102.5 77.5L111 77" pathLength="1"/><path class="lc c-aq" d="M112.8 87.5a4.3 4.3 0 1 0 8.5 0a4.3 4.3 0 1 0 -8.5 0" pathLength="1"/><path class="c-hl" d="M101.5 90a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0"/><path class="c-go" d="M150 94Q150.7 97.3 154 98Q150.7 98.7 150 102Q149.3 98.7 146 98Q149.3 97.3 150 94Z"/><path class="c-go" d="M58 37Q58.5 39.5 61 40Q58.5 40.5 58 43Q57.5 40.5 55 40Q57.5 39.5 58 37Z"/></svg>',
   'food-baked':
     '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-ik" d="M77 74L123 74Q132 74 132 83L132 99Q132 108 123 108L77 108Q68 108 68 99L68 83Q68 74 77 74Z" pathLength="1"/><path class="lc fw" d="M77 70L123 70Q129 70 129 76L129 76Q129 82 123 82L77 82Q71 82 71 76L71 76Q71 70 77 70Z" pathLength="1"/><path class="lc c-hm" d="M68 72C70 58 84 52 100 52C116 52 130 58 132 72C124 76 114 72 106 75C98 78 88 73 80 76C75 77 70 76 68 72Z" pathLength="1"/><path class="c-hd" fill-opacity="0.45" d="M74 66C84 62 92 68 100 64C108 60 116 66 126 62"/><path class="c-hd" fill-opacity="0.5" d="M74 66C84 62 92 68 100 64C108 60 116 66 126 62L126 65C116 69 108 63 100 67C92 71 84 65 74 69Z"/><path class="c-hl" d="M82.5 58a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-hl" d="M94.5 56a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-hl" d="M108.5 58a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-hl" d="M118.5 64a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-hl" d="M88.5 70a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-hl" d="M102.5 69a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-be" fill-opacity="0.25" d="M69.5 96L130.5 96Q132 96 132 97.5L132 97.5Q132 99 130.5 99L69.5 99Q68 99 68 97.5L68 97.5Q68 96 69.5 96Z"/><path class="c-go" d="M146 40Q146.7 43.3 150 44Q146.7 44.7 146 48Q145.3 44.7 142 44Q145.3 43.3 146 40Z"/><path class="c-go" d="M54 97Q54.5 99.5 57 100Q54.5 100.5 54 103Q53.5 100.5 51 100Q53.5 99.5 54 97Z"/></svg>',
+  'food-rolls':
+    '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hl" d="M80.6 52.1L150.5 20.9Q152.1 20.2 152.8 21.8L152.8 21.8Q153.5 23.4 151.9 24L82 55.2Q80.4 55.9 79.7 54.3L79.7 54.3Q79 52.8 80.6 52.1Z" pathLength="1"/><path class="lc c-hl" d="M83.4 58.5L153.4 27.3Q154.9 26.6 155.6 28.2L155.6 28.2Q156.3 29.8 154.8 30.4L84.8 61.6Q83.2 62.3 82.6 60.7L82.6 60.7Q81.9 59.2 83.4 58.5Z" pathLength="1"/><path class="lc c-ik" d="M55 74a17 17 0 1 0 34 0a17 17 0 1 0 -34 0" pathLength="1"/><path class="fw" d="M57.7 74a14.3 14.3 0 1 0 28.6 0a14.3 14.3 0 1 0 -28.6 0"/><path class="c-mt" fill-opacity="0.8" d="M61.6 68.9a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-mt" fill-opacity="0.8" d="M79.5 66.4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-mt" fill-opacity="0.8" d="M65 83.4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-mt" fill-opacity="0.8" d="M81.2 80a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-mt" fill-opacity="0.8" d="M71.8 62.4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-mt" fill-opacity="0.8" d="M59.8 76.6a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="lc c-hm" d="M64.5 72.6a5.4 5.4 0 1 0 10.9 0a5.4 5.4 0 1 0 -10.9 0" pathLength="1"/><path class="lh" d="M66.9 70.9L72.7 70.6" pathLength="1"/><path class="lc c-aq" d="M73.9 77.7a2.9 2.9 0 1 0 5.8 0a2.9 2.9 0 1 0 -5.8 0" pathLength="1"/><path class="c-hl" d="M66.2 79.4a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0"/><path class="lc c-ik" d="M85 82a25 25 0 1 0 50 0a25 25 0 1 0 -50 0" pathLength="1"/><path class="fw" d="M89 82a21 21 0 1 0 42 0a21 21 0 1 0 -42 0"/><path class="c-mt" fill-opacity="0.8" d="M94.8 74.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-mt" fill-opacity="0.8" d="M121 70.8a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-mt" fill-opacity="0.8" d="M99.8 95.8a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-mt" fill-opacity="0.8" d="M123.5 90.8a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-mt" fill-opacity="0.8" d="M109.8 65a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="c-mt" fill-opacity="0.8" d="M92 85.8a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path class="lc c-hm" d="M99 80a8 8 0 1 0 16 0a8 8 0 1 0 -16 0" pathLength="1"/><path class="lh" d="M102.5 77.5L111 77" pathLength="1"/><path class="lc c-aq" d="M112.8 87.5a4.3 4.3 0 1 0 8.5 0a4.3 4.3 0 1 0 -8.5 0" pathLength="1"/><path class="c-hl" d="M101.5 90a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0"/><path class="c-go" d="M150 94Q150.7 97.3 154 98Q150.7 98.7 150 102Q149.3 98.7 146 98Q149.3 97.3 150 94Z"/><path class="c-go" d="M58 37Q58.5 39.5 61 40Q58.5 40.5 58 43Q57.5 40.5 55 40Q57.5 39.5 58 37Z"/></svg>',
   'food-sushi':
     '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc fw" d="M68 82L100 82Q112 82 112 94L112 94Q112 106 100 106L68 106Q56 106 56 94L56 94Q56 82 68 82Z" pathLength="1"/><path class="lc c-hm" d="M54 84C54 72 70 66 86 68C102 70 116 74 116 84C104 88 66 90 54 84Z" pathLength="1"/><path class="lh" opacity="0.9" d="M66 76C74 74 80 80 88 78M80 72C88 70 94 76 102 76" pathLength="1"/><path class="lc c-ik" d="M127 74L145 74Q151 74 151 80L151 100Q151 106 145 106L127 106Q121 106 121 100L121 80Q121 74 127 74Z" pathLength="1"/><path class="lc fw" d="M127 70L145 70Q149 70 149 74L149 74Q149 78 145 78L127 78Q123 78 123 74L123 74Q123 70 127 70Z" pathLength="1"/><path class="lc c-be" d="M124.8 69a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0" pathLength="1"/><path class="lc c-be" d="M130.8 67a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0" pathLength="1"/><path class="lc c-be" d="M136.8 68a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0" pathLength="1"/><path class="lc c-be" d="M142.8 70a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0" pathLength="1"/><path class="lc c-be" d="M127.8 74a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0" pathLength="1"/><path class="lc c-be" d="M134.8 73a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0" pathLength="1"/><path class="lc c-be" d="M140.8 74a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0" pathLength="1"/><path class="c-go" d="M60 40Q60.7 43.3 64 44Q60.7 44.7 60 48Q59.3 44.7 56 44Q59.3 43.3 60 40Z"/><path class="c-go" d="M150 37Q150.5 39.5 153 40Q150.5 40.5 150 43Q149.5 40.5 147 40Q149.5 39.5 150 37Z"/></svg>',
   'food-pizza':
     '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hm" d="M58 72a42 42 0 1 0 84 0a42 42 0 1 0 -84 0" pathLength="1"/><path class="c-hl" d="M65 72a35 35 0 1 0 70 0a35 35 0 1 0 -70 0"/><path class="lc" opacity="0.25" d="M100 37V107M65 72H135M75 47L125 97M125 47L75 97" pathLength="1"/><path class="lc c-be" d="M80 56a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" pathLength="1"/><path class="lc c-be" d="M110 60a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" pathLength="1"/><path class="lc c-be" d="M74 84a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" pathLength="1"/><path class="lc c-be" d="M104 88a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" pathLength="1"/><path class="lc c-be" d="M94 72a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" pathLength="1"/><path class="lc c-be" d="M118 78a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" pathLength="1"/><path class="c-ik" d="M93.6 52a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0"/><path class="fw" d="M95 52a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-ik" d="M67.6 70a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0"/><path class="fw" d="M69 70a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-ik" d="M127.6 92a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0"/><path class="fw" d="M129 92a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-ik" d="M89.6 98a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0"/><path class="fw" d="M91 98a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path class="c-aq" d="M104 62Q110.4 64.1 112.7 57Q106.3 54.9 104 62Z"/><path class="c-aq" d="M90 78Q84.2 76.1 82.2 82.5Q88 84.4 90 78Z"/><path class="c-go" d="M150 32Q150.7 35.3 154 36Q150.7 36.7 150 40Q149.3 36.7 146 36Q149.3 35.3 150 32Z"/><path class="c-go" d="M52 105Q52.5 107.5 55 108Q52.5 108.5 52 111Q51.5 108.5 49 108Q51.5 107.5 52 105Z"/></svg>',
-  'food-chicken':
-    '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-mt" d="M116.2 69.8L125.6 73.2Q128.4 74.2 127.3 77L127.3 77Q126.3 79.9 123.5 78.8L114.1 75.4Q111.3 74.4 112.3 71.6L112.3 71.6Q113.3 68.8 116.2 69.8Z" pathLength="1"/><path class="lc c-mt" d="M126.4 74.5a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" pathLength="1"/><path class="lc c-mt" d="M124.1 80.9a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" pathLength="1"/><path class="lc c-hm" d="M63.4 53.8C69.3 37.8 103.8 48.3 104.6 63.5L115.3 69.3L113.1 75.3L101.2 72.9C90.8 84 57.6 69.8 63.4 53.8Z" pathLength="1"/><path class="c-hd" fill-opacity="0.35" d="M65.2 60.8C71.8 71.7 89.1 77 99.7 71.2L101.2 72.9C90.8 84 57.6 69.8 65.2 60.8Z"/><path class="c-hl" fill-opacity="0.8" d="M75.6 49.7Q86.3 49.4 94.7 55.6Q85 53.1 74.9 51.6Z"/><path class="lc c-mt" d="M125.7 80.6L135.5 78.5Q138.4 77.9 139 80.9L139 80.9Q139.7 83.8 136.7 84.4L126.9 86.5Q124 87.1 123.4 84.2L123.4 84.2Q122.8 81.2 125.7 80.6Z" pathLength="1"/><path class="lc c-mt" d="M136.3 77.1a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" pathLength="1"/><path class="lc c-mt" d="M137.7 83.8a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" pathLength="1"/><path class="lc c-hm" d="M72.5 95C69 78.4 103.8 68.9 112.6 81.4L124.7 80.6L126 86.9L114.6 91.1C111.7 106.1 76.1 111.6 72.5 95Z" pathLength="1"/><path class="c-hd" fill-opacity="0.35" d="M77.7 100C89.1 105.8 106.5 101.1 112.5 90.6L114.6 91.1C111.7 106.1 76.1 111.6 77.7 100Z"/><path class="c-hl" fill-opacity="0.8" d="M80.6 85.1Q89.6 79.1 100 79.9Q90.4 83 81.1 87Z"/><path class="lc c-be" d="M132 100C140 92 146 80 146 70C150 74 150 90 140 102C137 105 133 104 132 100Z" pathLength="1"/><path class="lc c-aq" d="M146 70C146 66 148 63 151 62" pathLength="1"/><path class="c-go" d="M56 36Q56.7 39.3 60 40Q56.7 40.7 56 44Q55.3 40.7 52 40Q55.3 39.3 56 36Z"/><path class="c-go" d="M150 37Q150.5 39.5 153 40Q150.5 40.5 150 43Q149.5 40.5 147 40Q149.5 39.5 150 37Z"/></svg>',
   'food-doner':
     '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hm" d="M114.5 33.1L121.1 35.5Q124.8 36.9 123.5 40.6L122.4 43.4Q121.1 47.2 117.3 45.8L110.7 43.4Q107 42.1 108.3 38.3L109.4 35.5Q110.7 31.7 114.5 33.1Z" pathLength="1"/><path class="lc c-hm" d="M97.6 29.6L104.4 27.8Q108.2 26.8 109.3 30.6L110 33.5Q111.1 37.4 107.2 38.4L100.4 40.2Q96.6 41.3 95.5 37.4L94.8 34.5Q93.7 30.6 97.6 29.6Z" pathLength="1"/><path class="lc c-hm" d="M87.5 31.7L94.3 32.9Q98.3 33.6 97.6 37.6L97.1 40.5Q96.4 44.5 92.4 43.8L85.5 42.5Q81.6 41.9 82.3 37.9L82.8 35Q83.5 31 87.5 31.7Z" pathLength="1"/><path class="lc c-aq" d="M121 48Q113.8 33.5 95.1 33Q102.2 47.6 121 48Z" pathLength="1"/><path class="lc c-aq" d="M85.2 44.3Q101.3 46.7 112.4 31.6Q96.4 29.2 85.2 44.3Z" pathLength="1"/><path class="lc c-be" d="M101.7 36.6a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0 -13 0" pathLength="1"/><path class="fw" fill-opacity="0.6" d="M105.2 36.6a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path class="lc fw" d="M126.8 50.7Q103.6 42.2 79.1 45.6L88.3 111Q95.6 117.8 104.2 112.6Z" pathLength="1"/><path class="c-hm" fill-opacity="0.45" d="M108.7 61a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0"/><path class="c-hm" fill-opacity="0.45" d="M90.2 65.1a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0"/><path class="c-hm" fill-opacity="0.45" d="M102.5 72.4a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0"/><path class="c-hm" fill-opacity="0.45" d="M94.2 55.5a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0"/><path class="lc c-be" d="M116.5 81.8Q100.1 75 82.7 78.2L88.3 111Q95.6 117.8 104.2 112.6Z" pathLength="1"/><path class="fw" fill-opacity="0.5" d="M112.5 91.4L84.6 88.5L85.2 92.5L111 95.3Z"/><path class="c-go" d="M58 38Q58.7 41.3 62 42Q58.7 42.7 58 46Q57.3 42.7 54 42Q57.3 41.3 58 38Z"/><path class="c-go" d="M148 93Q148.5 95.5 151 96Q148.5 96.5 148 99Q147.5 96.5 145 96Q147.5 95.5 148 93Z"/></svg>',
-  'food-burger':
-    '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hm" d="M72 98L128 98Q134 98 134 104L134 106Q134 112 128 112L72 112Q66 112 66 106L66 104Q66 98 72 98Z" pathLength="1"/><path class="lc c-hd" d="M70 81L130 81Q137 81 137 88L137 89Q137 96 130 96L70 96Q63 96 63 89L63 88Q63 81 70 81Z" pathLength="1"/><path class="lc c-hl" d="M63 76H137L134 82L127 88L121 82H97L90 90L84 82H63Z" pathLength="1"/><path class="lc c-aq" d="M60 70Q63 78 66 70Q69 66 72 70Q75 78 78 70Q81 66 84 70Q87 78 90 70Q93 66 96 70Q99 78 102 70Q105 66 108 70Q111 78 114 70Q117 66 120 70Q123 78 126 70Q129 66 132 70Q135 78 138 70Q141 74 140 76H60Q59 73 60 70Z" pathLength="1"/><path class="lc c-hm" d="M63 68C63 44 80 34 100 34C120 34 137 44 137 68Z" pathLength="1"/><path class="c-hl" fill-opacity="0.7" d="M74 50C78 42 88 38 96 38C88 41 81 45 78 52Z"/><path class="fw" d="M82.6 45.2L84.5 44.5Q85.7 44.1 86.1 45.2L86.1 45.2Q86.5 46.4 85.4 46.8L83.5 47.5Q82.3 47.9 81.9 46.8L81.9 46.8Q81.5 45.6 82.6 45.2Z"/><path class="fw" d="M97.2 40.6L99.2 41Q100.4 41.2 100.2 42.4L100.2 42.4Q100 43.6 98.8 43.4L96.8 43Q95.6 42.8 95.8 41.6L95.8 41.6Q96 40.4 97.2 40.6Z"/><path class="fw" d="M111.7 44.5L113.5 45.5Q114.5 46.1 113.9 47.1L113.9 47.1Q113.3 48.1 112.3 47.5L110.5 46.5Q109.5 45.9 110.1 44.9L110.1 44.9Q110.7 43.9 111.7 44.5Z"/><path class="fw" d="M90.8 55L92.8 54.6Q94 54.4 94.2 55.6L94.2 55.6Q94.4 56.8 93.2 57L91.2 57.4Q90 57.6 89.8 56.4L89.8 56.4Q89.6 55.2 90.8 55Z"/><path class="fw" d="M105.3 54.6L107.3 55.1Q108.4 55.4 108.1 56.6L108.1 56.6Q107.8 57.7 106.7 57.4L104.7 56.9Q103.6 56.6 103.9 55.4L103.9 55.4Q104.2 54.3 105.3 54.6Z"/><path class="fw" d="M122 54.4L123.5 55.7Q124.5 56.5 123.7 57.4L123.7 57.4Q122.9 58.3 122 57.6L120.5 56.3Q119.5 55.5 120.3 54.6L120.3 54.6Q121.1 53.7 122 54.4Z"/><path class="fw" d="M76.5 57.5L78.3 56.5Q79.3 55.9 79.9 56.9L79.9 56.9Q80.5 57.9 79.5 58.5L77.7 59.5Q76.7 60.1 76.1 59.1L76.1 59.1Q75.5 58.1 76.5 57.5Z"/><path class="c-go" d="M54 40Q54.7 43.3 58 44Q54.7 44.7 54 48Q53.3 44.7 50 44Q53.3 43.3 54 40Z"/><path class="c-go" d="M150 37Q150.5 39.5 153 40Q150.5 40.5 150 43Q149.5 40.5 147 40Q149.5 39.5 150 37Z"/></svg>',
-  'food-nuggets':
-    '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hm" d="M90.1 66.9C88.9 67.7 85.7 70.4 83.1 71.5C80.4 72.7 76.6 74.5 74.1 73.9C71.6 73.4 69.3 70.3 67.9 68.2C66.6 66 65.1 63 65.9 61.1C66.8 59.2 70.4 57.8 73 56.6C75.7 55.5 79.3 53.6 81.9 54.2C84.4 54.7 86.9 57.6 88.3 59.8C89.7 61.9 89.8 65.7 90.1 66.9Z" pathLength="1"/><path class="lc c-hm" d="M104.3 67.6C102.6 67.5 97.5 67.6 94.3 66.8C91.1 66.1 86.4 65.1 85.1 63.1C83.7 61.2 85.1 57.5 86.2 55C87.3 52.5 89.2 49.3 91.7 48.4C94.3 47.4 98.4 48.6 101.6 49.4C104.8 50.1 109.4 51 110.8 52.9C112.2 54.9 111.2 58.6 110.1 61.1C109 63.5 105.2 66.5 104.3 67.6Z" pathLength="1"/><path class="lc c-hm" d="M107.2 76.2C106.5 75.3 103.8 72.7 102.7 70.7C101.7 68.7 100.1 65.8 101 64.1C102 62.4 105.8 61.1 108.4 60.4C111 59.7 114.7 59 116.8 59.8C118.9 60.6 120 63.4 121.1 65.4C122.1 67.4 123.8 70.2 122.9 71.9C122 73.6 118.3 75 115.7 75.8C113.1 76.5 108.6 76.1 107.2 76.2Z" pathLength="1"/><path class="c-hd" fill-opacity="0.4" d="M72.6 60a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="c-hd" fill-opacity="0.4" d="M80.6 66a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="c-hd" fill-opacity="0.4" d="M93.6 54a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="c-hd" fill-opacity="0.4" d="M100.6 60a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="c-hd" fill-opacity="0.4" d="M108.6 66a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="lc c-be" d="M62 72H124L117 118H69Z" pathLength="1"/><path class="fw" fill-opacity="0.85" d="M65 84H121L120 92H66Z"/><path class="lc c-hl" d="M148.8 100.9L155.1 126.1Q155.6 128.1 153.6 128.6L153.6 128.6Q151.7 129.1 151.2 127.1L144.9 101.9Q144.4 99.9 146.4 99.5L146.4 99.5Q148.3 99 148.8 100.9Z" pathLength="1"/><path class="lc c-hm" d="M146.3 59.8L153.8 89.9Q156.1 99.1 146.8 101.4L146.8 101.4Q137.6 103.7 135.3 94.5L127.8 64.4Q125.5 55.2 134.7 52.9L134.7 52.9Q144 50.6 146.3 59.8Z" pathLength="1"/><path class="c-hl" fill-opacity="0.7" d="M142.4 58.9L146.9 77Q147.3 78.6 145.7 79L145.7 79Q144 79.4 143.6 77.8L139.1 59.7Q138.7 58.1 140.4 57.7L140.4 57.7Q142 57.3 142.4 58.9Z"/><path class="la" opacity="0.9" d="M133.3 63.6L143 69.4L137.2 79.1L146.8 84.9L141 94.6" pathLength="1"/><path class="c-go" d="M56 36Q56.7 39.3 60 40Q56.7 40.7 56 44Q55.3 40.7 52 40Q55.3 39.3 56 36Z"/><path class="c-go" d="M152 31Q152.5 33.5 155 34Q152.5 34.5 152 37Q151.5 34.5 149 34Q151.5 33.5 152 31Z"/></svg>',
+  'food-chicken':
+    '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-mt" d="M116.2 69.8L125.6 73.2Q128.4 74.2 127.3 77L127.3 77Q126.3 79.9 123.5 78.8L114.1 75.4Q111.3 74.4 112.3 71.6L112.3 71.6Q113.3 68.8 116.2 69.8Z" pathLength="1"/><path class="lc c-mt" d="M126.4 74.5a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" pathLength="1"/><path class="lc c-mt" d="M124.1 80.9a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" pathLength="1"/><path class="lc c-hm" d="M63.4 53.8C69.3 37.8 103.8 48.3 104.6 63.5L115.3 69.3L113.1 75.3L101.2 72.9C90.8 84 57.6 69.8 63.4 53.8Z" pathLength="1"/><path class="c-hd" fill-opacity="0.35" d="M65.2 60.8C71.8 71.7 89.1 77 99.7 71.2L101.2 72.9C90.8 84 57.6 69.8 65.2 60.8Z"/><path class="c-hl" fill-opacity="0.8" d="M75.6 49.7Q86.3 49.4 94.7 55.6Q85 53.1 74.9 51.6Z"/><path class="lc c-mt" d="M125.7 80.6L135.5 78.5Q138.4 77.9 139 80.9L139 80.9Q139.7 83.8 136.7 84.4L126.9 86.5Q124 87.1 123.4 84.2L123.4 84.2Q122.8 81.2 125.7 80.6Z" pathLength="1"/><path class="lc c-mt" d="M136.3 77.1a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" pathLength="1"/><path class="lc c-mt" d="M137.7 83.8a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" pathLength="1"/><path class="lc c-hm" d="M72.5 95C69 78.4 103.8 68.9 112.6 81.4L124.7 80.6L126 86.9L114.6 91.1C111.7 106.1 76.1 111.6 72.5 95Z" pathLength="1"/><path class="c-hd" fill-opacity="0.35" d="M77.7 100C89.1 105.8 106.5 101.1 112.5 90.6L114.6 91.1C111.7 106.1 76.1 111.6 77.7 100Z"/><path class="c-hl" fill-opacity="0.8" d="M80.6 85.1Q89.6 79.1 100 79.9Q90.4 83 81.1 87Z"/><path class="lc c-be" d="M132 100C140 92 146 80 146 70C150 74 150 90 140 102C137 105 133 104 132 100Z" pathLength="1"/><path class="lc c-aq" d="M146 70C146 66 148 63 151 62" pathLength="1"/><path class="c-go" d="M56 36Q56.7 39.3 60 40Q56.7 40.7 56 44Q55.3 40.7 52 40Q55.3 39.3 56 36Z"/><path class="c-go" d="M150 37Q150.5 39.5 153 40Q150.5 40.5 150 43Q149.5 40.5 147 40Q149.5 39.5 150 37Z"/></svg>',
   'food-fries':
     '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hl" d="M78.5 36.4L81.5 36.1Q83 35.9 83.2 37.4L87 74.2Q87.2 75.7 85.7 75.8L82.7 76.1Q81.2 76.3 81.1 74.8L77.2 38Q77 36.5 78.5 36.4Z" pathLength="1"/><path class="lc c-hl" d="M95.1 30.1L98.1 30.4Q99.6 30.6 99.4 32L95.6 68.8Q95.4 70.3 93.9 70.2L90.9 69.9Q89.4 69.7 89.6 68.2L93.5 31.4Q93.6 29.9 95.1 30.1Z" pathLength="1"/><path class="lc c-hl" d="M94.7 38.4L97.7 38Q99.2 37.9 99.4 39.4L103.2 76.2Q103.4 77.7 101.9 77.8L98.9 78.1Q97.4 78.3 97.3 76.8L93.4 40Q93.3 38.5 94.7 38.4Z" pathLength="1"/><path class="lc c-hl" d="M111.3 28.1L114.3 28.4Q115.8 28.6 115.6 30.1L111.8 66.9Q111.6 68.3 110.1 68.2L107.1 67.9Q105.6 67.7 105.8 66.2L109.7 29.4Q109.8 27.9 111.3 28.1Z" pathLength="1"/><path class="lc c-hl" d="M110.3 34.4L113.3 34.1Q114.8 33.9 115 35.4L118.8 72.2Q119 73.7 117.5 73.8L114.5 74.2Q113 74.3 112.9 72.8L109 36Q108.8 34.5 110.3 34.4Z" pathLength="1"/><path class="lc c-hl" d="M89.4 46L92.4 46.3Q93.9 46.5 93.8 48L89.9 84.8Q89.7 86.2 88.2 86.1L85.3 85.8Q83.8 85.6 83.9 84.1L87.8 47.3Q87.9 45.8 89.4 46Z" pathLength="1"/><path class="lc c-hl" d="M99.4 44.3L102.4 44Q103.8 43.9 104 45.3L107.9 82.1Q108 83.6 106.5 83.8L103.6 84.1Q102.1 84.3 101.9 82.8L98 46Q97.9 44.5 99.4 44.3Z" pathLength="1"/><path class="lc c-hl" d="M113.2 48L116.2 48.3Q117.7 48.5 117.5 49.9L113.7 86.7Q113.5 88.2 112 88.1L109 87.8Q107.6 87.6 107.7 86.1L111.6 49.3Q111.7 47.8 113.2 48Z" pathLength="1"/><path class="lc c-be" d="M72 70H128L120 120H80Z" pathLength="1"/><path class="fw" fill-opacity="0.9" d="M76 92H124L122 104H78Z"/><path class="c-be" d="M96.6 98a3.4 3.4 0 1 0 6.8 0a3.4 3.4 0 1 0 -6.8 0"/><path class="c-go" d="M62 36Q62.7 39.3 66 40Q62.7 40.7 62 44Q61.3 40.7 58 40Q61.3 39.3 62 36Z"/><path class="c-go" d="M142 41Q142.5 43.5 145 44Q142.5 44.5 142 47Q141.5 44.5 139 44Q141.5 43.5 142 41Z"/></svg>',
-  'food-drink':
-    '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-be" d="M117.7 15L117.7 15Q119.9 15.5 119.3 17.6L105.9 71.6Q105.4 73.7 103.2 73.2L103.2 73.2Q101.1 72.6 101.6 70.5L115.1 16.6Q115.6 14.4 117.7 15Z" pathLength="1"/><path class="c-hd" d="M80 58H120L116 116H84Z"/><path class="fw" fill-opacity="0.75" d="M89.9 60.6L95.8 61.6Q97.8 61.9 97.4 63.9L96.4 69.8Q96.1 71.8 94.1 71.4L88.2 70.4Q86.2 70.1 86.6 68.1L87.6 62.2Q87.9 60.2 89.9 60.6Z"/><path class="fw" fill-opacity="0.75" d="M104 63.7L109.9 62.5Q111.9 62.1 112.3 64L113.5 69.9Q113.9 71.9 112 72.3L106.1 73.5Q104.1 73.9 103.7 72L102.5 66.1Q102.1 64.1 104 63.7Z"/><path class="fw" fill-opacity="0.75" d="M95.5 72.7L101.5 73.3Q103.5 73.6 103.3 75.5L102.7 81.5Q102.4 83.5 100.5 83.3L94.5 82.7Q92.5 82.4 92.7 80.5L93.3 74.5Q93.6 72.5 95.5 72.7Z"/><path class="fw" fill-opacity="0.7" d="M86.6 98a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="fw" fill-opacity="0.7" d="M102.6 104a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="fw" fill-opacity="0.7" d="M94.6 90a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="fw" fill-opacity="0.7" d="M108.6 92a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="lc c-mt" fill-opacity="0.12" d="M76 52H124L118 120H82Z" pathLength="1"/><path class="c-aq" d="M118 52A9 9 0 0 1 134 46L124 54Z"/><path class="c-go" d="M62 38Q62.7 41.3 66 42Q62.7 42.7 62 46Q61.3 42.7 58 42Q61.3 41.3 62 38Z"/><path class="c-go" d="M146 93Q146.5 95.5 149 96Q146.5 96.5 146 99Q145.5 96.5 143 96Q145.5 95.5 146 93Z"/></svg>'
+  'food-nuggets':
+    '<svg class="il" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path class="c-bg" d="M54 70a46 46 0 1 0 92 0a46 46 0 1 0 -92 0"/><path class="lc c-hm" d="M90.1 66.9C88.9 67.7 85.7 70.4 83.1 71.5C80.4 72.7 76.6 74.5 74.1 73.9C71.6 73.4 69.3 70.3 67.9 68.2C66.6 66 65.1 63 65.9 61.1C66.8 59.2 70.4 57.8 73 56.6C75.7 55.5 79.3 53.6 81.9 54.2C84.4 54.7 86.9 57.6 88.3 59.8C89.7 61.9 89.8 65.7 90.1 66.9Z" pathLength="1"/><path class="lc c-hm" d="M104.3 67.6C102.6 67.5 97.5 67.6 94.3 66.8C91.1 66.1 86.4 65.1 85.1 63.1C83.7 61.2 85.1 57.5 86.2 55C87.3 52.5 89.2 49.3 91.7 48.4C94.3 47.4 98.4 48.6 101.6 49.4C104.8 50.1 109.4 51 110.8 52.9C112.2 54.9 111.2 58.6 110.1 61.1C109 63.5 105.2 66.5 104.3 67.6Z" pathLength="1"/><path class="lc c-hm" d="M107.2 76.2C106.5 75.3 103.8 72.7 102.7 70.7C101.7 68.7 100.1 65.8 101 64.1C102 62.4 105.8 61.1 108.4 60.4C111 59.7 114.7 59 116.8 59.8C118.9 60.6 120 63.4 121.1 65.4C122.1 67.4 123.8 70.2 122.9 71.9C122 73.6 118.3 75 115.7 75.8C113.1 76.5 108.6 76.1 107.2 76.2Z" pathLength="1"/><path class="c-hd" fill-opacity="0.4" d="M72.6 60a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="c-hd" fill-opacity="0.4" d="M80.6 66a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="c-hd" fill-opacity="0.4" d="M93.6 54a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="c-hd" fill-opacity="0.4" d="M100.6 60a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="c-hd" fill-opacity="0.4" d="M108.6 66a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0"/><path class="lc c-be" d="M62 72H124L117 118H69Z" pathLength="1"/><path class="fw" fill-opacity="0.85" d="M65 84H121L120 92H66Z"/><path class="lc c-hl" d="M148.8 100.9L155.1 126.1Q155.6 128.1 153.6 128.6L153.6 128.6Q151.7 129.1 151.2 127.1L144.9 101.9Q144.4 99.9 146.4 99.5L146.4 99.5Q148.3 99 148.8 100.9Z" pathLength="1"/><path class="lc c-hm" d="M146.3 59.8L153.8 89.9Q156.1 99.1 146.8 101.4L146.8 101.4Q137.6 103.7 135.3 94.5L127.8 64.4Q125.5 55.2 134.7 52.9L134.7 52.9Q144 50.6 146.3 59.8Z" pathLength="1"/><path class="c-hl" fill-opacity="0.7" d="M142.4 58.9L146.9 77Q147.3 78.6 145.7 79L145.7 79Q144 79.4 143.6 77.8L139.1 59.7Q138.7 58.1 140.4 57.7L140.4 57.7Q142 57.3 142.4 58.9Z"/><path class="la" opacity="0.9" d="M133.3 63.6L143 69.4L137.2 79.1L146.8 84.9L141 94.6" pathLength="1"/><path class="c-go" d="M56 36Q56.7 39.3 60 40Q56.7 40.7 56 44Q55.3 40.7 52 40Q55.3 39.3 56 36Z"/><path class="c-go" d="M152 31Q152.5 33.5 155 34Q152.5 34.5 152 37Q151.5 34.5 149 34Q151.5 33.5 152 31Z"/></svg>'
 };
 /*ILL:END*/
 
@@ -2810,7 +3063,7 @@ formatTime = function (min) { return formatTimeSameDay(min > 1440 ? min - 1440 :
 // Фото — карта PHOTOS от сборки (tools/photos.js: source/photos + source/foto-spisok.md), файлы рядом в photos/:
 // c — фото разделов (<имя>-t.webp плитка, <имя>.webp шапка), i — фото блюд «категория/блюдо» (<имя>.webp карточка, <имя>-m.webp миниатюра).
 // Нет фото или файл не загрузился — рисунок.
-const PHOTOS = {"c":{"combo":"kat-kombo","cold-rolls":"kat-kholodnye-rolly","mini-rolls":"kat-mini-rolly","warm-rolls":"kat-teplye-rolly","baked-rolls":"kat-zapechennye-rolly","sushi":"kat-sushi","pizza":"kat-pizza","chicken":"kat-kuritsa-zakuski","drinks":"kat-napitki"},"i":{}};
+const PHOTOS = {"c":{"sety-10-20":"kat-sety-10-20","sety-30":"kat-sety-30","sety-40-50":"kat-sety-40-50","sety-60-90":"kat-sety-60-90","sety-100":"kat-sety-100","sety-bez-sushi":"kat-sety-bez-sushi","teplye":"kat-teplye","zapechennye":"kat-zapechennye","holodnye":"kat-holodnye","mini":"kat-mini","sushi":"kat-sushi","pizza":"kat-pizza","zakuski":"kat-zakuski","sousy":"kat-sousy"},"i":{"sety-10-20/set-banzay":"set-banzay","sety-10-20/set-sengoku":"set-sengoku","sety-10-20/set-lyubimoy":"set-lyubimoy","sety-10-20/set-voda":"set-voda","sety-10-20/set-merkuriy":"set-merkuriy","sety-10-20/set-tsvetushchie-vkusy":"set-tsvetushchie-vkusy","sety-10-20/set-miks":"set-miks","sety-10-20/set-lovi-vayb":"set-lovi-vayb","sety-10-20/set-feya-i-belyy-kit":"set-feya-i-belyy-kit","sety-10-20/set-sub-zero":"set-sub-zero","sety-10-20/set-na-dvoikh":"set-na-dvoikh","sety-10-20/set-neptun":"set-neptun","sety-10-20/set-mars":"set-mars","sety-10-20/set-podkabluchnik":"set-podkabluchnik","sety-10-20/set-leto":"set-leto","sety-10-20/set-barbi":"set-barbi","sety-10-20/set-pluton":"set-pluton","sety-10-20/set-uran":"set-uran","sety-10-20/set-probuzhdenie-vkusa":"set-probuzhdenie-vkusa","sety-30/set-brat-ili-brak-3":"set-brat-ili-brak-3","sety-30/set-samaya-vyshka":"set-samaya-vyshka","sety-30/set-kosmos":"set-kosmos","sety-30/set-flesh":"set-flesh","sety-30/set-yupiter":"set-yupiter","sety-30/set-zemlya":"set-zemlya","sety-30/set-zelyonaya-svezhest":"set-zelyonaya-svezhest","sety-30/set-venera":"set-venera","sety-30/set-pekin":"set-pekin","sety-30/set-onlayn":"set-onlayn","sety-30/set-ekspress":"set-ekspress","sety-30/set-molodaya-vesna":"set-molodaya-vesna","sety-30/set-sled-killera":"set-sled-killera","sety-30/set-solnechnoe-naslazhdenie":"set-solnechnoe-naslazhdenie","sety-40-50/set-ekonom":"set-ekonom","sety-40-50/set-milan":"set-milan","sety-40-50/set-alfavit":"set-alfavit","sety-40-50/set-saturn":"set-saturn","sety-40-50/set-tsezar":"set-tsezar","sety-40-50/set-aristokrat":"set-aristokrat","sety-40-50/set-khitovyy":"set-khitovyy","sety-40-50/set-alladin":"set-alladin","sety-40-50/set-beyish":"set-beyish","sety-40-50/set-luna":"set-luna","sety-40-50/set-5-volna":"set-5-volna","sety-40-50/set-elit":"set-elit","sety-40-50/set-sakhara":"set-sakhara","sety-40-50/set-sensata":"set-sensata","sety-40-50/set-kok-zhaylau":"set-kok-zhaylau","sety-40-50/set-karmen":"set-karmen","sety-40-50/set-khodovoy":"set-khodovoy","sety-40-50/set-sansey":"set-sansey","sety-40-50/set-kombo":"set-kombo","sety-40-50/set-druzya":"set-druzya","sety-40-50/set-fila":"set-fila","sety-40-50/set-vozdukh":"set-vozdukh","sety-40-50/set-dzhekpot":"set-dzhekpot","sety-40-50/set-dyuna":"set-dyuna","sety-40-50/set-arena":"set-arena","sety-40-50/set-aleks":"set-aleks","sety-40-50/set-vkusnaya-vesna":"set-vkusnaya-vesna","sety-60-90/set-yakudza":"set-yakudza","sety-60-90/set-baza":"set-baza","sety-60-90/set-mayami":"set-mayami","sety-60-90/set-tornado":"set-tornado","sety-60-90/set-samuray":"set-samuray","sety-60-90/set-vygodnyy":"set-vygodnyy","sety-60-90/set-in-yan":"set-in-yan","sety-60-90/set-minus-odin":"set-minus-odin","sety-60-90/set-mega-miks":"set-mega-miks","sety-60-90/set-dzhim-kerri":"set-dzhim-kerri","sety-60-90/set-iz-90-kh":"set-iz-90-kh","sety-60-90/set-populyarnyy":"set-populyarnyy","sety-60-90/set-sokol":"set-sokol","sety-60-90/set-ay-luna":"set-ay-luna","sety-60-90/set-tosi-bosi":"set-tosi-bosi","sety-60-90/set-korporativ":"set-korporativ","sety-60-90/set-zimnyaya-skazka":"set-zimnyaya-skazka","sety-60-90/set-vesennyaya-skazka":"set-vesennyaya-skazka","sety-60-90/set-gigant":"set-gigant","sety-100/set-sakharnyy":"set-sakharnyy","sety-100/set-yaposha":"set-yaposha","sety-100/set-king-kong-godzilla":"set-king-kong-godzilla","sety-100/set-ded-moroz":"set-ded-moroz","sety-100/set-snegurochka":"set-snegurochka","sety-100/set-planeta":"set-planeta","sety-100/set-vkus-volshebstva":"set-vkus-volshebstva","sety-bez-sushi/set-van-dam":"set-van-dam","sety-bez-sushi/set-delyuks":"set-delyuks","sety-bez-sushi/set-cherepashki":"set-cherepashki","sety-bez-sushi/set-oskar":"set-oskar","teplye/americano":"americano","teplye/fresh":"fresh","teplye/tempura-s-zharenym-lososem":"tempura-s-zharenym-lososem","teplye/ebi-king":"ebi-king","teplye/syake-tempura":"syake-tempura","teplye/ebi-khot":"ebi-khot","teplye/ebi-tempura":"ebi-tempura","teplye/eskolar":"eskolar","teplye/tsezar-roll":"tsezar-roll","teplye/krispi-tsezar":"krispi-tsezar","teplye/chuka-khot-roll":"chuka-khot-roll","teplye/tempura":"tempura","teplye/unagi-tempura":"unagi-tempura","teplye/singapur":"singapur","zapechennye/filadelfiya-zapechennaya-lyuks":"filadelfiya-zapechennaya-lyuks","zapechennye/filadelfiya-zapechennaya-s-rozovym-sousom":"filadelfiya-zapechennaya-s-rozovym-sousom","zapechennye/ugor-zapechennyy":"ugor-zapechennyy","zapechennye/firmennyy-roll":"firmennyy-roll","zapechennye/kaliforniya-zapechennaya":"kaliforniya-zapechennaya","zapechennye/dinamit-roll":"dinamit-roll","zapechennye/ikura-zapechennaya":"ikura-zapechennaya","zapechennye/tsezar-zapechennyy":"tsezar-zapechennyy","zapechennye/murakami-zapechennyy":"murakami-zapechennyy","holodnye/filadelfiya-klassicheskaya":"filadelfiya-klassicheskaya","holodnye/filadelfiya-s-ogurtsom":"filadelfiya-s-ogurtsom","holodnye/oisi":"oisi","holodnye/filadelfiya-gril":"filadelfiya-gril","holodnye/antistress":"antistress","holodnye/filadelfiya-lyuks-s-ikroy":"filadelfiya-lyuks-s-ikroy","holodnye/filadelfiya-letnyaya":"filadelfiya-letnyaya","holodnye/kanada":"kanada","holodnye/drakon":"drakon","holodnye/unagi-filadelfiya":"unagi-filadelfiya","holodnye/belosnezhka":"belosnezhka","holodnye/kaliforniya":"kaliforniya","holodnye/lava":"lava","holodnye/alyaska":"alyaska","holodnye/geysha":"geysha","holodnye/almatinka":"almatinka","holodnye/bonito-v-struzhke-tuntsa":"bonito-v-struzhke-tuntsa","holodnye/sancho-pancho":"sancho-pancho","holodnye/chiken-roll-v-kunzhute":"chiken-roll-v-kunzhute","holodnye/busido":"busido","holodnye/tomato":"tomato","mini/roll-s-zharenym-lososem":"roll-s-zharenym-lososem","mini/kappa-maki":"kappa-maki","mini/ikura-lotos":"ikura-lotos","mini/khosomaki":"khosomaki","mini/syake-maki":"syake-maki","sushi/nigiri-s-lososem":"nigiri-s-lososem","sushi/nigiri-s-ugrem":"nigiri-s-ugrem","sushi/nigiri-s-krevetkoy":"nigiri-s-krevetkoy","sushi/gunkan-s-lososem":"gunkan-s-lososem","sushi/gunkan-s-ugrem":"gunkan-s-ugrem","sushi/gunkan-s-krevetkoy":"gunkan-s-krevetkoy","sushi/gunkan-s-tobiko":"gunkan-s-tobiko","sushi/gunkan-s-chukoy":"gunkan-s-chukoy","sushi/gunkan-zapechennyy-s-lososem":"gunkan-zapechennyy-s-lososem","sushi/gunkan-zapechennyy-s-ugrem":"gunkan-zapechennyy-s-ugrem","sushi/gunkan-zapechennyy-s-krevetkoy":"gunkan-zapechennyy-s-krevetkoy","sushi/gunkan-zapechennyy-s-krabom":"gunkan-zapechennyy-s-krabom","pizza/pizza-margarita":"pizza-margarita","pizza/pizza-pepperoni":"pizza-pepperoni","pizza/pizza-4-sezona":"pizza-4-sezona","pizza/pizza-barbekyu":"pizza-barbekyu","pizza/pizza-mysushi":"pizza-mysushi","pizza/pizza-boloneze":"pizza-boloneze","pizza/pizza-filadelfiya":"pizza-filadelfiya","pizza/pizza-morskoy-kokteyl":"pizza-morskoy-kokteyl","pizza/pizza-syrnaya":"pizza-syrnaya","pizza/pizza-kurinaya":"pizza-kurinaya","pizza/pizza-kuritsa-s-gribami":"pizza-kuritsa-s-gribami","pizza/pizza-gribnaya":"pizza-gribnaya","pizza/pizza-italyanskaya":"pizza-italyanskaya","pizza/pizza-amerikanskaya":"pizza-amerikanskaya","pizza/pizza-meksikanskaya":"pizza-meksikanskaya","pizza/pizza-okhotnichya":"pizza-okhotnichya","pizza/pizza-pepperoni-s-pomidorami":"pizza-pepperoni-s-pomidorami","pizza/pizza-voskhodyashchee-solntse":"pizza-voskhodyashchee-solntse","pizza/firmennyy-doner":"firmennyy-doner","zakuski/chuka-salat":"chuka-salat","zakuski/fri":"fri","zakuski/fri-shariki":"fri-shariki","zakuski/korn-dogi":"korn-dogi","zakuski/naggetsy":"naggetsy","zakuski/syrnye-palochki":"syrnye-palochki","zakuski/kurinye-krylyshki":"kurinye-krylyshki"}};
 const DELIVERY = priceData.meta.delivery || { min: 0, fee: 0, pickup: false };
 const CART_KEY = LANG_KEY.replace(/lang$/, 'cart');
 const ORDER_KEY = LANG_KEY.replace(/lang$/, 'order');
@@ -3425,6 +3678,133 @@ function checkout(screen) {
   }
   paint();
 }
+
+// ─────────── Плавающая кнопка «‹ Назад» ───────────
+// Вставляет сборка (место BACK_BUTTON в food.js), только если в settings.js кафе backButton: true (первое — vostok).
+// На экранах раздела, карточки блюда и корзины — кнопка внизу справа, видна при любой прокрутке (на главной её нет).
+// Есть нижняя панель (корзина, «Добавить», «Заказать») — кнопка над ней: высота панели следится через ResizeObserver
+// (подсказка «не хватает …» меняет высоту). Нажатие = верхняя ссылка «‹ …» экрана (шаг назад: карточка → раздел → главная).
+let fbackWatch = null;
+
+const renderBack = render;
+render = function (route, direction) {
+  if (fbackWatch) { fbackWatch.disconnect(); fbackWatch = null; }
+  renderBack(route, direction);
+  const app = document.getElementById('app');
+  app.style.removeProperty('--fback-b');
+  const screen = app.querySelector('.screen');
+  const top = screen.querySelector('.back');
+  if (route.screen === 'home' || !top) return;
+  screen.classList.add('has-fback');
+  const btn = el('button', 'fback');
+  btn.type = 'button';
+  btn.appendChild(svgNode(ICONS.back));
+  btn.appendChild(el('span', null, t('back')));
+  btn.addEventListener('click', function () { top.click(); });
+  if (!direction) btn.style.animation = 'none';
+  app.appendChild(btn);
+  const bar = app.querySelector('.book-bar');
+  if (!bar) return;
+  // Над панелью: её верхние 12 px — прозрачная часть градиента
+  function place() { app.style.setProperty('--fback-b', Math.max(0, bar.offsetHeight - 12) + 'px'); }
+  place();
+  if (window.ResizeObserver) {
+    fbackWatch = new ResizeObserver(place);
+    fbackWatch.observe(bar);
+  }
+};
+
+// ─────────── Альбом в шапке раздела ───────────
+// Вставляет сборка (место CATEGORY_GALLERY в food.js), только если в settings.js кафе categoryGallery: true (первое — vostok).
+// Вместо одного фото раздела — лента, которая листается пальцем (scroll-snap: прокрутку ведёт браузер — плавно и на слабых
+// телефонах, страница вбок не едет): первым — фото раздела, дальше блюда раздела с фото по порядку меню, под каждым — название.
+// Слайд блюда — ссылка на карточку. Фото грузятся лениво: сразу текущее и следующее, остальные — при пролистывании.
+// Фото не загрузилось (нет сети и нет в кэше) — слайд и его точка убираются. Позиция ленты помнится до перезагрузки страницы.
+const galleryPos = {};
+
+const renderCategoryGallery = renderCategory;
+renderCategory = function (screen, cat) {
+  renderCategoryGallery(screen, cat);
+  const old = screen.querySelector('.screen-head .ill-big');
+  const slides = [];
+  const catPhoto = photoName(PHOTOS.c, cat.id);
+  if (catPhoto) slides.push({ name: loc(cat.name), src: photoSrc(catPhoto, '') });
+  cat.items.forEach(function (item) {
+    const p = photoName(PHOTOS.i, cat.id + '/' + item.id);
+    if (p) slides.push({ name: loc(item.name), src: photoSrc(p, ''), href: itemHash(cat, item) });
+  });
+  if (!old || slides.length < 2) return;
+
+  const box = el('div', 'fgal');
+  const track = el('div', 'fgal-track');
+  track.tabIndex = 0;
+  track.setAttribute('role', 'region');
+  track.setAttribute('aria-label', loc(cat.name));
+  const dots = el('div', 'fgal-dots');
+  dots.setAttribute('aria-hidden', 'true');
+  slides.forEach(function (s) {
+    const slide = el(s.href ? 'a' : 'div', 'fgal-slide');
+    if (s.href) slide.href = s.href;
+    const frame = el('div', 'fgal-frame');
+    const img = el('img', 'fgal-img');
+    img.alt = '';
+    img.decoding = 'async';
+    img.addEventListener('error', function () { drop(slide); });
+    frame.appendChild(img);
+    slide.appendChild(frame);
+    slide.appendChild(el('span', 'fgal-cap', s.name));
+    s.slide = slide;
+    s.img = img;
+    s.dot = el('span', 'fgal-dot');
+    track.appendChild(slide);
+    dots.appendChild(s.dot);
+  });
+  box.appendChild(track);
+  box.appendChild(dots);
+  old.parentNode.replaceChild(box, old);
+
+  let current = -1;
+  function load(i) {
+    const s = slides[i];
+    if (s && !s.img.getAttribute('src')) s.img.src = s.src;
+  }
+  function show() {
+    const w = track.clientWidth || 1;
+    const i = Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / w)));
+    load(i);
+    load(i + 1);
+    if (i === current) return;
+    if (slides[current]) slides[current].dot.classList.remove('is-on');
+    slides[i].dot.classList.add('is-on');
+    current = i;
+    galleryPos[cat.id] = i;
+  }
+  // Не загрузилось — слайд убирается; не осталось ни одного — снова рисунок раздела
+  function drop(slide) {
+    const k = slides.findIndex(function (s) { return s.slide === slide; });
+    if (k === -1) return;
+    const s = slides.splice(k, 1)[0];
+    track.removeChild(s.slide);
+    dots.removeChild(s.dot);
+    if (!slides.length) {
+      if (box.parentNode) box.parentNode.replaceChild(illustration(cat.illustration, 'ill-big'), box);
+      return;
+    }
+    dots.hidden = slides.length < 2;
+    current = -1;
+    show();
+  }
+  let ticking = false;
+  track.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () { ticking = false; show(); });
+  }, { passive: true });
+
+  const start = Math.min(galleryPos[cat.id] || 0, slides.length - 1);
+  if (start) track.scrollLeft = start * track.clientWidth;
+  show();
+};
 
 init();
 </script>

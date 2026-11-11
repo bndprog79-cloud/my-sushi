@@ -11,7 +11,7 @@
  */
 'use strict';
 
-const CACHE_VERSION = '8d207eefd3';
+const CACHE_VERSION = '5ad5dea05a';
 const CACHE_PREFIX = 'my-sushi-';
 const CACHE = CACHE_PREFIX + CACHE_VERSION;
 const PAGE = './';
@@ -122,24 +122,34 @@ function assetResponse(req) {
 // «сначала кэш, потом сеть», удачный ответ сохраняется в тот же кэш (CACHE). Без сети и без копии — пустой ответ:
 // картинка не загрузится, на сайте останется рисунок (без сетевой ошибки в консоли).
 const PHOTO_PRECACHE = [
-  './photos/kat-kholodnye-rolly-t.webp',
-  './photos/kat-kholodnye-rolly.webp',
-  './photos/kat-kombo-t.webp',
-  './photos/kat-kombo.webp',
-  './photos/kat-kuritsa-zakuski-t.webp',
-  './photos/kat-kuritsa-zakuski.webp',
-  './photos/kat-mini-rolly-t.webp',
-  './photos/kat-mini-rolly.webp',
-  './photos/kat-napitki-t.webp',
-  './photos/kat-napitki.webp',
+  './photos/kat-holodnye-t.webp',
+  './photos/kat-holodnye.webp',
+  './photos/kat-mini-t.webp',
+  './photos/kat-mini.webp',
   './photos/kat-pizza-t.webp',
   './photos/kat-pizza.webp',
+  './photos/kat-sety-10-20-t.webp',
+  './photos/kat-sety-10-20.webp',
+  './photos/kat-sety-100-t.webp',
+  './photos/kat-sety-100.webp',
+  './photos/kat-sety-30-t.webp',
+  './photos/kat-sety-30.webp',
+  './photos/kat-sety-40-50-t.webp',
+  './photos/kat-sety-40-50.webp',
+  './photos/kat-sety-60-90-t.webp',
+  './photos/kat-sety-60-90.webp',
+  './photos/kat-sety-bez-sushi-t.webp',
+  './photos/kat-sety-bez-sushi.webp',
+  './photos/kat-sousy-t.webp',
+  './photos/kat-sousy.webp',
   './photos/kat-sushi-t.webp',
   './photos/kat-sushi.webp',
-  './photos/kat-teplye-rolly-t.webp',
-  './photos/kat-teplye-rolly.webp',
-  './photos/kat-zapechennye-rolly-t.webp',
-  './photos/kat-zapechennye-rolly.webp'
+  './photos/kat-teplye-t.webp',
+  './photos/kat-teplye.webp',
+  './photos/kat-zakuski-t.webp',
+  './photos/kat-zakuski.webp',
+  './photos/kat-zapechennye-t.webp',
+  './photos/kat-zapechennye.webp'
 ];
 const photosUrl = new URL('./photos/', self.location).href;
 
